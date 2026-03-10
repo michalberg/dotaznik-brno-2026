@@ -43,8 +43,8 @@ try {
         email      TEXT,
         status     TEXT    DEFAULT "partial",
         last_page  TEXT,
-        created_at TEXT    DEFAULT (datetime("now")),
-        updated_at TEXT    DEFAULT (datetime("now"))
+        created_at TEXT,
+        updated_at TEXT
     )');
 
     $stmt = $db->prepare('
