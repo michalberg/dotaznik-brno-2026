@@ -438,6 +438,11 @@
       border-top: 1px solid var(--border);
       padding: 8px 16px max(14px, env(safe-area-inset-bottom));
       z-index: 100;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+    .nav.nav-visible {
+      transform: translateY(0);
     }
     .nav-inner {
       display: flex;
@@ -1486,6 +1491,42 @@ function showPage() {
   }
 
   updateProgress();
+  updateNavVisibility();
+}
+
+let _navObserver = null;
+
+function updateNavVisibility() {
+  const nav = document.querySelector('.nav');
+  const id = PAGES[currentIdx];
+
+  // Na úvodní a závěrečné stránce lištu vždy zobrazíme
+  if (id === 'page-intro' || id === 'page-end') {
+    nav.classList.add('nav-visible');
+    if (_navObserver) { _navObserver.disconnect(); _navObserver = null; }
+    return;
+  }
+
+  // Na ostatních stránkách — skryjeme a čekáme na doscrollování ke konci
+  nav.classList.remove('nav-visible');
+  if (_navObserver) _navObserver.disconnect();
+
+  const page = document.getElementById(id);
+  // Poslední přímý viditelný potomek stránky
+  const children = Array.from(page.children).filter(el => el.offsetHeight > 0);
+  const lastEl = children[children.length - 1];
+
+  if (!lastEl) { nav.classList.add('nav-visible'); return; }
+
+  _navObserver = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      nav.classList.add('nav-visible');
+      _navObserver.disconnect();
+      _navObserver = null;
+    }
+  }, { threshold: 0.3 });
+
+  _navObserver.observe(lastEl);
 }
 
 function updateProgress() {
