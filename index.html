@@ -1310,6 +1310,50 @@
      JAVASCRIPT
 ══════════════════════════════════════════════════════════ -->
 <script>
+// ─── UUID pro průběžné ukládání ───────────────────────────────────
+const SAVE_URL = '/save.php';
+
+function getUUID() {
+  let id = localStorage.getItem('dotaznik_uuid');
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem('dotaznik_uuid', id);
+  }
+  return id;
+}
+
+function collectAllData() {
+  const data = {};
+  document.querySelectorAll('input[name]:checked').forEach(inp => {
+    if (inp.type === 'radio') {
+      data[inp.name] = inp.value;
+    } else {
+      if (!data[inp.name]) data[inp.name] = [];
+      data[inp.name].push(inp.value);
+    }
+  });
+  document.querySelectorAll('textarea').forEach(ta => {
+    if (ta.value.trim()) data[ta.id] = ta.value.trim();
+  });
+  document.querySelectorAll('.other-input').forEach(inp => {
+    if (inp.id && inp.value.trim()) data[inp.id] = inp.value.trim();
+  });
+  const n5 = document.getElementById('n5');
+  if (n5 && n5.value) data.n5 = n5.value;
+  const email = document.getElementById('email-field');
+  if (email && email.value.trim()) data.email = email.value.trim();
+  return data;
+}
+
+function saveProgress(status = 'partial') {
+  const page = PAGES[currentIdx] ?? null;
+  fetch(SAVE_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ uuid: getUUID(), page, status, data: collectAllData() })
+  }).catch(() => {}); // fire-and-forget, chyby ignorujeme
+}
+
 // ─── Page order ───────────────────────────────────────────────────
 const PAGES = [
   'page-intro', 'page-a', 'page-b', 'page-c',
@@ -1407,6 +1451,7 @@ function goNext() {
     return;
   }
   if (!validatePage()) return;
+  saveProgress('partial');
   if (currentIdx < PAGES.length - 1) {
     currentIdx++;
     showPage();
@@ -1492,7 +1537,7 @@ function submitForm() {
   const email = document.getElementById('email-field');
   if (email.value.trim()) data.email = email.value.trim();
 
-  console.log('Odeslaná data:', JSON.stringify(data, null, 2));
+  saveProgress('complete');
 
   const _surveyUrl = location.href;
   const _shareMsg = 'Zelení Brno zjišťují, jaké chcete Brno. Vyplňte průzkum: ' + _surveyUrl;
