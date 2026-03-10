@@ -800,6 +800,7 @@
       <label class="option"><input type="radio" name="g-gate" value="zsak"><span class="option-label">ano, na základní škole (7–15 let)</span></label>
       <label class="option"><input type="radio" name="g-gate" value="oboji"><span class="option-label">ano, obojí</span></label>
       <label class="option"><input type="radio" name="g-gate" value="ne"><span class="option-label">ne</span></label>
+      <label class="option"><input type="radio" name="g-gate" value="nechci"><span class="option-label">nechci odpovědět</span></label>
     </div>
   </div>
 
@@ -1454,7 +1455,7 @@ on('input[name="f1"]', 'change', () => {
 // G gateway → G questions, G1a, G1b
 on('input[name="g-gate"]', 'change', () => {
   const v = val('g-gate');
-  const hasKids = v && v !== 'ne';
+  const hasKids = v && v !== 'ne' && v !== 'nechci';
   document.getElementById('g-questions').classList.toggle('hidden', !hasKids);
   if (hasKids) {
     toggle('g1a-question', v === 'predskolak' || v === 'oboji');
