@@ -1160,8 +1160,6 @@ let currentIdx = 0;
 // visibleCheck: id of element — skip validation if that element has .hidden
 const REQUIRED = {
   'page-a': [
-    { type: 'checkbox', name: 'a1' },
-    { type: 'checkbox', name: 'a2' },
     { type: 'textarea', elId: 'a3' },
   ],
   'page-b': [
@@ -1491,11 +1489,11 @@ on('input[name="i1"]', 'change', () => {
 // Key = prefix that uniquely identifies the question-text
 const QUESTION_META = {
   'A1.': {
-    required: true,
+    required: false,
     reasoning: 'Otevírá dotazník pocitovou otázkou — každý má na Brno názor. Zachycuje emocionální rámec, skrz který respondenti město vnímají. Kombinace s A2 odhalí „perception gap" mezi tím, jak město vidí dnes a jak by chtěli, aby vypadalo. Nejčastější pojmy jsou přímý materiál pro komunikační kampaň.'
   },
   'A2.': {
-    required: true,
+    required: false,
     reasoning: 'Doplňuje A1. Klíčová je křížová analýza: lidé, kteří dnes označí „přeplněné a drahé" a zároveň chtějí „dostupné pro všechny", jsou přirozený segment pro sdělení o bydlení. Pojmy z A2 jsou použitelné jako claim nebo vizuální motiv kampaně.'
   },
   'A3.': {
