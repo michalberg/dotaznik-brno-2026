@@ -10,17 +10,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
+
       - name: Upload via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: 62.109.154.45
-          username: jakebrno.cz
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
-          server-dir: /public_html/
-          passive: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            .github/**
-            *.md
+        env:
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp -c "
+            set ftp:ssl-allow no;
+            set net:max-retries 3;
+            open -u 'jakebrno.cz','$FTP_PASSWORD' ftp://62.109.154.45;
+            mirror -R --parallel=4 --exclude-glob .git* --exclude-glob .github --exclude '*.md' ./ /public_html/;
+            bye
+          "
