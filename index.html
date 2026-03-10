@@ -285,7 +285,7 @@
       bottom: 0; left: 0; right: 0;
       background: var(--surface);
       border-top: 1px solid var(--border);
-      padding: 10px 16px env(safe-area-inset-bottom, 0px);
+      padding: 10px 16px max(14px, env(safe-area-inset-bottom));
       z-index: 100;
     }
     .nav-inner {
@@ -293,7 +293,7 @@
       gap: 10px;
       max-width: 640px;
       margin: 0 auto;
-      justify-content: flex-end;
+      justify-content: center;
     }
     .btn {
       padding: 11px 22px;
