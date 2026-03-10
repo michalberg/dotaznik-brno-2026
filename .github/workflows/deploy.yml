@@ -21,6 +21,6 @@ jobs:
             set ftp:ssl-allow no;
             set net:max-retries 3;
             open -u 'jakebrno.cz','$FTP_PASSWORD' ftp://62.109.154.45;
-            mirror -R --parallel=4 --exclude-glob .git* --exclude-glob .github --exclude '*.md' ./ /public_html/;
+            mirror -R --parallel=4 --exclude-glob .git* --exclude-glob .github --exclude-glob '*.md' ./ /public_html/;
             bye
           "
