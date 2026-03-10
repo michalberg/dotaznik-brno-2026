@@ -1165,45 +1165,24 @@ const REQUIRED = {
     { type: 'textarea', elId: 'a3' },
   ],
   'page-b': [
-    { type: 'checkbox', name: 'b1' },
-    { type: 'checkbox', name: 'b2', visibleCheck: 'b2-question' },
-    { type: 'checkbox', name: 'b3' },
-  ],
-  'page-cd': [
-    { type: 'checkbox', name: 'c1', min: 3 },
-    { type: 'radio',    name: 'd1' },
+    { type: 'checkbox', name: 'b1' }, // větví B2
   ],
   'page-e': [
-    { type: 'checkbox', name: 'e1' },
-    { type: 'radio',    name: 'e3a' },
-    { type: 'radio',    name: 'e6' },
-    { type: 'radio',    name: 'e7' },
+    { type: 'checkbox', name: 'e1' },  // větví E2, E4a
+    { type: 'radio',    name: 'e3a' }, // větví E3b
+    { type: 'radio',    name: 'e4a', visibleCheck: 'e4a-question' }, // větví E4b
   ],
   'page-f': [
-    { type: 'radio', name: 'f1' },
+    { type: 'radio', name: 'f1' }, // větví F3
   ],
   'page-g': [
-    { type: 'radio',    name: 'g-gate' },
-    { type: 'radio',    name: 'g1a', visibleCheck: 'g1a-question' },
-    { type: 'radio',    name: 'g1b', visibleCheck: 'g1b-question' },
-    { type: 'checkbox', name: 'g2',  visibleCheck: 'g-questions' },
-    { type: 'checkbox', name: 'g3',  visibleCheck: 'g-questions' },
+    { type: 'radio', name: 'g-gate' }, // větví celý blok G
   ],
   'page-h': [
-    { type: 'radio', name: 'h1a' },
-    { type: 'radio', name: 'h2' },
+    { type: 'radio', name: 'h1a' }, // větví H1b
   ],
   'page-i': [
-    { type: 'radio', name: 'i1' },
-  ],
-  'page-jk': [
-    { type: 'radio',    name: 'j1' },
-    { type: 'checkbox', name: 'k1' },
-  ],
-  'page-n': [
-    { type: 'radio', name: 'n1' },
-    { type: 'radio', name: 'n2' },
-    { type: 'radio', name: 'n4' },
+    { type: 'radio', name: 'i1' }, // větví I2
   ],
 };
 
@@ -1536,15 +1515,15 @@ const QUESTION_META = {
     reasoning: 'Zachytí převládající narativ o vedení města — bez stranického rámování, čistě hodnotový. Kombinace s N6 (volební chování) ukáže, zda nespokojenost přichází od dosavadních nevoličů Zelených (potenciál oslovení) nebo od vlastní základny (riziko úniku). Tvrzení jsou formulována jako konkrétní kritika, ne abstraktní hodnocení.'
   },
   'B2.': {
-    required: true,
+    required: false,
     reasoning: 'Pokrývá víc než jen komunikaci — míchá komunikaci (informovat předem) s rozhodováním (výběrová řízení, výsledky). Pokud dominuje „chci být informován předem", otevírá téma transparentnosti. Kombinace B1+B2 definuje, jaký narativ má smysl použít. Kandidát na vyřazení: data z B1 jsou pro kampaň dostačující.'
   },
   'B3.': {
-    required: true,
+    required: false,
     reasoning: 'Přímo formuje, jak Zelení prezentují sebe a své kandidáty. Pokud lidé říkají „odvaha a přímočarost", je to jiný positioning než „odbornost". Pomůže kalibrovat tón kampaně, výběr mluvčích i způsob, jak kandidáti mluví o sobě.'
   },
   'C1.': {
-    required: true,
+    required: false,
     reasoning: 'Výběr top 3 místo seřazování — kognitivně méně náročné. Kombinace s B1 odhalí, zda lidé kritizující vedení za velké projekty sami velké projekty podporují. Pokud bydlení a MHD dominují nad stadiony a lanovkou, je to argument pro kampaň „my víme, co je skutečná priorita".'
   },
   'C3.': {
@@ -1552,7 +1531,7 @@ const QUESTION_META = {
     reasoning: 'Konstruktivnější formulace než „co prokaučovalo" — orientuje respondenta na budoucnost, ne na přiřazování viny. Pro opoziční narativ cenné: pokud se opakují konkrétní příklady, lze je použít jako „co bychom udělali jinak".'
   },
   'D1.': {
-    required: true,
+    required: false,
     reasoning: 'Zelení zastávají kritický postoj k přesunu nádraží — otázka měří, jak je téma stále živé ve veřejnosti. Segment „pro přesun, ale nespokojený s procesem" je zvlášť zajímavý: může rezonovat s argumenty o transparentnosti bez ohledu na výsledný postoj k přesunu samotnému.'
   },
   'E1.': {
@@ -1568,15 +1547,15 @@ const QUESTION_META = {
     reasoning: 'Zobrazuje se všem, protože pěšky chodí každý alespoň někdy. Konkrétní místa jsou přímý vstup pro program. Kombinace s N5 (městská část) odhalí geografické hot spoty.'
   },
   'E4a.': {
-    required: false,
+    required: true,
     reasoning: 'Cílená otázka na segment, který je přirozenou základnou Zelených. Konkrétní místa umožní přímou vazbu na program.'
   },
   'E6.': {
-    required: true,
+    required: false,
     reasoning: 'Rezidentní zóny jsou v Brně politicky citlivé téma. Data ukáží míru podpory i charakter odporu — zda jde o principiální odmítnutí nebo o obavu z konkrétních dopadů. Kombinace s E7 dá koherentní obraz postoje k využití veřejného prostoru.'
   },
   'E7.': {
-    required: true,
+    required: false,
     reasoning: 'Testuje podporu pro konkrétní politiku, která je pro Zelené přirozená, ale politicky citlivá. Formulace záměrně neutrální — „mění se na veřejný prostor", ne „odstraní se parkoviště". Středová odpověď zachytí respondenty, které lze přesvědčit konkrétními příklady.'
   },
   'F1.': {
@@ -1584,23 +1563,23 @@ const QUESTION_META = {
     reasoning: 'Segmentuje respondenty podle osobní naléhavosti. Kombinace s věkem odhalí, zda jde primárně o mladé nebo i střední generaci. Pokud i lidé, kteří sami bydlení neřeší, označují téma za „společenský problém", je to signál pro empatickou kampaň.'
   },
   'F3.': {
-    required: true,
+    required: false,
     reasoning: 'Každá odpověď je konkrétní politické opatření — výsledky přímo formují program.'
   },
   'G1a.': {
-    required: true,
+    required: false,
     reasoning: 'Diagnostická otázka specifická pro předškolní věk. Kombinace s N5 ukáže geografické rozdíly v dostupnosti míst ve školkách.'
   },
   'G1b.': {
-    required: true,
+    required: false,
     reasoning: 'Základní školy jsou jiné téma než školky. Separace G1a a G1b umožní přesnější analýzu a cílenější programová opatření.'
   },
   'G2.': {
-    required: true,
+    required: false,
     reasoning: 'Odhalí, co rodiče vedle školek a škol řeší. Kombinace s E3 může ukázat, že bezpečné cesty do školy jsou skrytá priorita.'
   },
   'G3.': {
-    required: true,
+    required: false,
     reasoning: 'Zachytí jak potřebu, tak preferovanou formu podpory v jednom kroku. Odliší lidi, kteří chtějí peníze (příspěvek), od těch, kteří chtějí infrastrukturu — jsou to různá politická řešení s různými náklady.'
   },
   'H1a.': {
@@ -1608,7 +1587,7 @@ const QUESTION_META = {
     reasoning: 'Kombinace s H2 ukáže, zda nespokojení chtějí velká zařízení — nebo spíše lokální sportoviště a parky. Konkrétní odpovědi v H1b jsou přímý argument do debaty o prioritách investic.'
   },
   'H2.': {
-    required: true,
+    required: false,
     reasoning: 'Přímé měření podpory pro kontroverzní investici. Pokud dominuje „spíše pro, ale až potom…", Zelení mohou komunikovat jako „nejsme proti stadionům, ale trváme na správném pořadí priorit".'
   },
   'I1.': {
@@ -1616,11 +1595,11 @@ const QUESTION_META = {
     reasoning: 'Subjektivní pocit bezpečí je důležitý politický indikátor. Kombinace s I2 a N5 (městská část) ukáže, zda jde o celoměstský nebo lokální problém — a co lidé skutečně za nebezpečí považují.'
   },
   'J1.': {
-    required: true,
+    required: false,
     reasoning: 'Subjektivní vnímání ekonomické situace predikuje, jaká témata respondenta zajímají a jak silně. Kombinace s F1 odhalí propojení ekonomické tísně s bytovým problémem. Pomáhá kalibrovat tón kampaně — „příležitosti" nebo „jistoty".'
   },
   'K1.': {
-    required: true,
+    required: false,
     reasoning: 'Zachytí hodnotový rámec a obavy respondentů. Kombinace s N6 ukáže, co motivuje různé segmenty — zda jsou voliči Zelených primárně motivováni klimatem, demokracií nebo ekonomickými obavami. Položka „migrace" je záměrně neutrální — nechává respondenta, aby si sám definoval, jak téma vnímá.'
   },
   'L1.': {
