@@ -18,9 +18,12 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
           lftp -c "
+            set ftp:passive-mode true;
             set ftp:ssl-allow no;
-            set net:max-retries 3;
+            set net:timeout 60;
+            set net:max-retries 5;
+            set net:reconnect-interval-base 5;
             open -u 'jakebrno.cz','$FTP_PASSWORD' ftp://62.109.154.45;
-            mirror -R --parallel=4 --exclude-glob .git* --exclude-glob .github --exclude-glob '*.md' ./ /public_html/;
+            mirror -R --parallel=2 --exclude-glob .git* --exclude-glob .github --exclude-glob '*.md' ./ /public_html/;
             bye
           "
