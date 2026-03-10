@@ -163,9 +163,41 @@
       background: var(--bg);
       outline: none;
       transition: border-color 0.2s;
+      resize: vertical;
+      min-height: 54px;
+      line-height: 1.5;
     }
     .other-input.visible { display: block; }
     .other-input:focus { border-color: var(--primary); }
+
+    /* ── INLINE FOLLOWUP (textarea inside question card) ── */
+    .inline-followup {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .followup-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .inline-followup textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: border-color 0.2s;
+      line-height: 1.5;
+    }
+    .inline-followup textarea:focus { border-color: var(--primary); }
 
     /* ── TEXTAREA ── */
     .question textarea {
@@ -408,7 +440,7 @@
       <label class="option"><input type="checkbox" name="a1" value="příjemné, ale trochu nudné"><span class="option-label">příjemné, ale trochu nudné</span></label>
       <label class="option"><input type="checkbox" name="a1" value="rozdělené a nerovné"><span class="option-label">rozdělené a nerovné</span></label>
       <label class="option"><input type="checkbox" name="a1" value="jiné"><span class="option-label">jiné</span></label>
-      <input type="text" class="other-input" id="a1-other" placeholder="Upřesněte…">
+      <textarea class="other-input" id="a1-other" placeholder="Upřesněte…"></textarea>
     </div>
   </div>
 
@@ -425,7 +457,7 @@
       <label class="option"><input type="checkbox" name="a2" value="kulturně bohaté"><span class="option-label">kulturně bohaté</span></label>
       <label class="option"><input type="checkbox" name="a2" value="otevřené a transparentně spravované"><span class="option-label">otevřené a transparentně spravované</span></label>
       <label class="option"><input type="checkbox" name="a2" value="jiné"><span class="option-label">jiné</span></label>
-      <input type="text" class="other-input" id="a2-other" placeholder="Upřesněte…">
+      <textarea class="other-input" id="a2-other" placeholder="Upřesněte…"></textarea>
     </div>
   </div>
 
@@ -464,7 +496,7 @@
       <label class="option"><input type="checkbox" name="b1" value="neřeší moje témata"><span class="option-label">neřeší témata, která jsou pro mě důležitá</span></label>
       <label class="option"><input type="checkbox" name="b1" value="nesleduji"><span class="option-label">vedení města příliš nesleduji, nemám vyhraněný názor</span></label>
       <label class="option"><input type="checkbox" name="b1" value="jiné"><span class="option-label">jiné</span></label>
-      <input type="text" class="other-input" id="b1-other" placeholder="Upřesněte…">
+      <textarea class="other-input" id="b1-other" placeholder="Upřesněte…"></textarea>
     </div>
   </div>
 
@@ -479,7 +511,7 @@
       <label class="option"><input type="checkbox" name="b2" value="výběrová řízení"><span class="option-label">chci otevřenější výběrová řízení a přehledné zakázky</span></label>
       <label class="option"><input type="checkbox" name="b2" value="spokojený/á"><span class="option-label">nic zásadního — jsem s tím celkově spokojený/á</span></label>
       <label class="option"><input type="checkbox" name="b2" value="jiné"><span class="option-label">jiné</span></label>
-      <input type="text" class="other-input" id="b2-other" placeholder="Upřesněte…">
+      <textarea class="other-input" id="b2-other" placeholder="Upřesněte…"></textarea>
     </div>
   </div>
 
@@ -496,7 +528,7 @@
       <label class="option"><input type="checkbox" name="b3" value="spolehlivost"><span class="option-label">spolehlivost — dělá to, co slíbí</span></label>
       <label class="option"><input type="checkbox" name="b3" value="blízké hodnoty"><span class="option-label">hodnoty blízké mým vlastním</span></label>
       <label class="option"><input type="checkbox" name="b3" value="jiné"><span class="option-label">jiné</span></label>
-      <input type="text" class="other-input" id="b3-other" placeholder="Upřesněte…">
+      <textarea class="other-input" id="b3-other" placeholder="Upřesněte…"></textarea>
     </div>
   </div>
 </div>
@@ -534,7 +566,6 @@
   </div>
 
   <!-- D1 -->
-  <div class="transition-note">Pojďme se u tématu nádraží zastavit podrobněji.</div>
   <div class="question">
     <div class="question-text">D1. Jak vnímáte téma přesunu brněnského nádraží?</div>
     <div class="options" id="d1-options">
@@ -563,7 +594,7 @@
       <label class="option"><input type="checkbox" name="e1" value="kolo"><span class="option-label">na kole nebo koloběžce</span></label>
       <label class="option"><input type="checkbox" name="e1" value="pěšky"><span class="option-label">pěšky (jako hlavní způsob pohybu, nejen přesun na zastávku)</span></label>
       <label class="option"><input type="checkbox" name="e1" value="jiné"><span class="option-label">jinak</span></label>
-      <input type="text" class="other-input" id="e1-other" placeholder="Jak jinak?">
+      <textarea class="other-input" id="e1-other" placeholder="Jak jinak?"></textarea>
     </div>
   </div>
 
@@ -578,11 +609,11 @@
       <label class="option"><input type="checkbox" name="e2" value="sdílená mobilita"><span class="option-label">lepší sdílená mobilita (sdílená kola, koloběžky, auta)</span></label>
       <label class="option"><input type="checkbox" name="e2" value="auto nenahraditelné"><span class="option-label">nic — auto je pro mě nenahraditelné</span></label>
       <label class="option"><input type="checkbox" name="e2" value="jiné"><span class="option-label">jiné</span></label>
-      <input type="text" class="other-input" id="e2-other" placeholder="Upřesněte…">
+      <textarea class="other-input" id="e2-other" placeholder="Upřesněte…"></textarea>
     </div>
   </div>
 
-  <!-- E3a -->
+  <!-- E3a + E3b -->
   <div class="question">
     <div class="question-text">E3a. Setkáváte se při pohybu pěšky v Brně s problémy?</div>
     <div class="options" id="e3a-options">
@@ -590,16 +621,13 @@
       <label class="option"><input type="radio" name="e3a" value="občas"><span class="option-label">občas</span></label>
       <label class="option"><input type="radio" name="e3a" value="ne"><span class="option-label">ne</span></label>
     </div>
+    <div class="inline-followup hidden" id="e3b-question">
+      <div class="followup-label">E3b. Kde konkrétně nebo v jaké situaci? (volitelné)</div>
+      <textarea id="e3b" placeholder="Napište prosím…"></textarea>
+    </div>
   </div>
 
-  <!-- E3b — conditional: E3a = ano nebo občas -->
-  <div class="question conditional hidden" id="e3b-question">
-    <div class="question-text">E3b. Kde konkrétně nebo v jaké situaci?</div>
-    <div class="question-hint">Volitelná otázka</div>
-    <textarea id="e3b" placeholder="Napište prosím…"></textarea>
-  </div>
-
-  <!-- E4a — conditional: E1 obsahuje kolo -->
+  <!-- E4a + E4b — conditional: E1 obsahuje kolo -->
   <div class="question conditional hidden" id="e4a-question">
     <div class="question-text">E4a. Setkáváte se při jízdě na kole nebo koloběžce s problémy?</div>
     <div class="options" id="e4a-options">
@@ -607,13 +635,10 @@
       <label class="option"><input type="radio" name="e4a" value="občas"><span class="option-label">občas</span></label>
       <label class="option"><input type="radio" name="e4a" value="ne"><span class="option-label">ne</span></label>
     </div>
-  </div>
-
-  <!-- E4b — conditional: E4a = ano nebo občas -->
-  <div class="question conditional hidden" id="e4b-question">
-    <div class="question-text">E4b. Kde konkrétně nebo v jaké situaci?</div>
-    <div class="question-hint">Volitelná otázka</div>
-    <textarea id="e4b" placeholder="Napište prosím…"></textarea>
+    <div class="inline-followup hidden" id="e4b-question">
+      <div class="followup-label">E4b. Kde konkrétně nebo v jaké situaci? (volitelné)</div>
+      <textarea id="e4b" placeholder="Napište prosím…"></textarea>
+    </div>
   </div>
 
   <!-- E6 -->
@@ -671,7 +696,7 @@
       <label class="option"><input type="checkbox" name="f3" value="podíl dostupných bytů"><span class="option-label">podmínit větší developerské projekty podílem dostupných bytů</span></label>
       <label class="option"><input type="checkbox" name="f3" value="nevím"><span class="option-label">nevím</span></label>
       <label class="option"><input type="checkbox" name="f3" value="jiné"><span class="option-label">jiné</span></label>
-      <input type="text" class="other-input" id="f3-other" placeholder="Upřesněte…">
+      <textarea class="other-input" id="f3-other" placeholder="Upřesněte…"></textarea>
     </div>
   </div>
 </div>
@@ -704,7 +729,7 @@
         <label class="option"><input type="radio" name="g1a" value="ano"><span class="option-label">ano, přímo nás to trápí nebo trápilo</span></label>
         <label class="option"><input type="radio" name="g1a" value="ne"><span class="option-label">ne, místo jsme sehnali bez větších problémů</span></label>
         <label class="option"><input type="radio" name="g1a" value="jiná zkušenost"><span class="option-label">jiná zkušenost</span></label>
-        <input type="text" class="other-input" id="g1a-other" placeholder="Upřesněte…">
+        <textarea class="other-input" id="g1a-other" placeholder="Upřesněte…"></textarea>
       </div>
     </div>
 
@@ -731,7 +756,7 @@
         <label class="option"><input type="checkbox" name="g2" value="volnočasové aktivity"><span class="option-label">dostupnost a cena volnočasových kroužků a aktivit</span></label>
         <label class="option"><input type="checkbox" name="g2" value="bytová nouze"><span class="option-label">podpora rodin v bytové nouzi nebo s vysokým nájmem</span></label>
         <label class="option"><input type="checkbox" name="g2" value="jiné"><span class="option-label">jiné</span></label>
-        <input type="text" class="other-input" id="g2-other" placeholder="Upřesněte…">
+        <textarea class="other-input" id="g2-other" placeholder="Upřesněte…"></textarea>
       </div>
     </div>
 
@@ -747,7 +772,7 @@
         <label class="option"><input type="checkbox" name="g3" value="nepotřebuji"><span class="option-label">nepotřebuji v tomto ohledu pomoc — péči mám zajištěnou</span></label>
         <label class="option"><input type="checkbox" name="g3" value="město by se tím nezabývalo"><span class="option-label">město by se tím zabývat nemělo</span></label>
         <label class="option"><input type="checkbox" name="g3" value="jiné"><span class="option-label">jiné</span></label>
-        <input type="text" class="other-input" id="g3-other" placeholder="Upřesněte…">
+        <textarea class="other-input" id="g3-other" placeholder="Upřesněte…"></textarea>
       </div>
     </div>
   </div><!-- /g-questions -->
@@ -760,7 +785,7 @@
   <div class="block-label">Blok H</div>
   <div class="block-title">Sport a volný čas</div>
 
-  <!-- H1a -->
+  <!-- H1a + H1b -->
   <div class="question">
     <div class="question-text">H1a. Jak hodnotíte dostupnost sportovišť a míst pro pohyb a volný čas v Brně?</div>
     <div class="options" id="h1a-options">
@@ -770,13 +795,10 @@
       <label class="option"><input type="radio" name="h1a" value="velmi nespokojen/a"><span class="option-label">jsem velmi nespokojen/a</span></label>
       <label class="option"><input type="radio" name="h1a" value="nezajímá"><span class="option-label">toto téma mě nezajímá</span></label>
     </div>
-  </div>
-
-  <!-- H1b — conditional: H1a = nespokojen/a nebo velmi nespokojen/a -->
-  <div class="question conditional hidden" id="h1b-question">
-    <div class="question-text">H1b. Jaká sportoviště nebo místa pro volný čas a v jaké části Brna byste uvítali?</div>
-    <div class="question-hint">Volitelná otázka</div>
-    <textarea id="h1b" placeholder="Napište prosím…"></textarea>
+    <div class="inline-followup hidden" id="h1b-question">
+      <div class="followup-label">H1b. Jaká sportoviště nebo místa pro volný čas a v jaké části Brna byste uvítali? (volitelné)</div>
+      <textarea id="h1b" placeholder="Napište prosím…"></textarea>
+    </div>
   </div>
 
   <!-- H2 -->
@@ -800,7 +822,7 @@
   <div class="block-label">Blok I</div>
   <div class="block-title">Bezpečnost</div>
 
-  <!-- I1 -->
+  <!-- I1 + I2 -->
   <div class="question">
     <div class="question-text">I1. Cítíte se v Brně bezpečně?</div>
     <div class="options" id="i1-options">
@@ -809,13 +831,10 @@
       <label class="option"><input type="radio" name="i1" value="spíše ne"><span class="option-label">spíše ne</span></label>
       <label class="option"><input type="radio" name="i1" value="většinou ne"><span class="option-label">většinou ne</span></label>
     </div>
-  </div>
-
-  <!-- I2 — conditional: I1 = spíše ne nebo většinou ne -->
-  <div class="question conditional hidden" id="i2-question">
-    <div class="question-text">I2. Co je hlavním zdrojem vašeho pocitu nebezpečí nebo nepohody?</div>
-    <div class="question-hint">Máte na mysli konkrétní místo nebo část Brna?</div>
-    <textarea id="i2" placeholder="Napište prosím…"></textarea>
+    <div class="inline-followup hidden" id="i2-question">
+      <div class="followup-label">I2. Co je hlavním zdrojem pocitu nebezpečí nebo nepohody? Máte na mysli konkrétní místo?</div>
+      <textarea id="i2" placeholder="Napište prosím…"></textarea>
+    </div>
   </div>
 </div>
 
@@ -853,7 +872,7 @@
       <label class="option"><input type="checkbox" name="k1" value="migrace"><span class="option-label">migrace</span></label>
       <label class="option"><input type="checkbox" name="k1" value="žádné"><span class="option-label">žádné z výše uvedených výrazněji</span></label>
       <label class="option"><input type="checkbox" name="k1" value="jiné"><span class="option-label">jiné</span></label>
-      <input type="text" class="other-input" id="k1-other" placeholder="Upřesněte…">
+      <textarea class="other-input" id="k1-other" placeholder="Upřesněte…"></textarea>
     </div>
   </div>
 </div>
@@ -944,6 +963,8 @@
         <option>Město (centrum)</option>
       </optgroup>
       <optgroup label="Ostatní části Brna">
+        <option>Brno-Jih</option>
+        <option>Brno-Sever</option>
         <option>Bystrc</option>
         <option>Bohunice</option>
         <option>Bosonohy</option>
@@ -1010,7 +1031,9 @@
       <div class="question-text">E-mail (volitelné)</div>
       <input type="email" class="email-input" id="email-field" placeholder="vas@email.cz">
     </div>
-    <button class="btn btn-next" style="width:100%; margin-top:16px;" onclick="submitForm()">Odeslat dotazník ✓</button>
+    <div style="text-align:right; margin-top:16px;">
+      <button class="btn btn-next" style="width:auto; display:inline-block;" onclick="submitForm()">Odeslat dotazník ✓</button>
+    </div>
   </div>
 </div>
 
@@ -1116,7 +1139,7 @@ function submitForm() {
     if (ta.value.trim()) data[ta.id] = ta.value.trim();
   });
 
-  document.querySelectorAll('.other-input.visible').forEach(inp => {
+  document.querySelectorAll('.other-input.visible, textarea.other-input.visible').forEach(inp => {
     if (inp.id && inp.value.trim()) data[inp.id] = inp.value.trim();
   });
 
