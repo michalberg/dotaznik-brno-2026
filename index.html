@@ -293,6 +293,7 @@
 
     /* ── NAVIGATION ── */
     /* ── INFO BUTTON + TOOLTIP ── */
+    .info-btn { display: none !important; }
     .info-btn {
       display: inline-flex;
       align-items: center;
@@ -1996,6 +1997,15 @@ document.addEventListener('DOMContentLoaded', () => {
   setupOptionStyling();
   setupMaxSelect();
   setupQuestionAnnotations();
+
+  // Odebrat čísla otázek (např. "A1. ", "E3a. ") z textu pro uživatele
+  document.querySelectorAll('.question-text, .followup-label').forEach(el => {
+    el.childNodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        node.textContent = node.textContent.replace(/^[A-Z]\d+[a-z]?\.\s+/, '');
+      }
+    });
+  });
 
   // Other-input reveals
   const others = [
