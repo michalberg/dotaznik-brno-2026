@@ -592,13 +592,12 @@
   <div class="intro-card">
     <h1>Jaké Brno chcete?</h1>
     <p>Bydlení, doprava, bezpečnost, velké projekty — co je pro vás skutečná priorita?</p>
-    <p>Odpovědi zveřejníme a použijeme při přípravě komunálního programu. Průzkum pořádají Zelení Brno.</p>
+    <p>Odpovědi použijeme při přípravě komunálního programu. Průzkum pořádají Zelení Brno.</p>
     <div class="intro-meta">
       <div class="intro-meta-item">⏱ 12–15 minut</div>
       <div class="intro-meta-item">🔒 Anonymní</div>
-      <div class="intro-meta-item">📊 Výsledky zveřejníme</div>
     </div>
-    <button class="btn-start" onclick="goNext()">Začít dotazník →</button>
+    <button class="btn-start" onclick="goNext()">Začít vyplňovat dotazník →</button>
   </div>
 </div>
 
@@ -1516,8 +1515,13 @@ function updateNavVisibility() {
     _navScrollHandler = null;
   }
 
-  // Na úvodní a závěrečné stránce lištu vždy zobrazíme
-  if (id === 'page-intro' || id === 'page-end') {
+  // Na úvodní stránce lištu skryjeme — vstup je jen přes btn-start
+  if (id === 'page-intro') {
+    nav.classList.remove('nav-visible');
+    return;
+  }
+  // Na závěrečné stránce lištu zobrazíme
+  if (id === 'page-end') {
     nav.classList.add('nav-visible');
     return;
   }
