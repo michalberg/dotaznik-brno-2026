@@ -348,6 +348,71 @@
       line-height: 1;
     }
 
+    /* ── SEMANTIC DIFFERENTIAL ── */
+    .semantic-diff {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 4px;
+    }
+    .sd-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+    .sd-left {
+      font-size: 13px;
+      color: var(--text);
+      text-align: right;
+      line-height: 1.3;
+    }
+    .sd-right {
+      font-size: 13px;
+      color: var(--text);
+      text-align: left;
+      line-height: 1.3;
+    }
+    .sd-scale {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .sd-option {
+      display: flex;
+      cursor: pointer;
+    }
+    .sd-option input[type="radio"] {
+      display: none;
+    }
+    .sd-dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: block;
+      transition: background 0.15s, border-color 0.15s;
+      background: var(--surface);
+    }
+    .sd-option input[type="radio"]:checked + .sd-dot {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .sd-option:hover .sd-dot {
+      border-color: var(--primary-light);
+      background: var(--primary-pale);
+    }
+    @media (max-width: 480px) {
+      .sd-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      .sd-left { text-align: left; }
+      .sd-scale { justify-content: center; }
+      .sd-right { text-align: left; color: var(--text-secondary); font-size: 12px; }
+      .sd-dot { width: 30px; height: 30px; }
+    }
+
     /* ── VALIDATION ── */
     .question.has-error,
     .gateway-card.has-error {
@@ -513,16 +578,23 @@
 
   <!-- A1 -->
   <div class="question">
-    <div class="question-text">A1. Vyberte 1–3 pojmy, které nejlépe vystihují Brno DNES.</div>
+    <div class="question-text">A1. Vyberte až 3 pojmy, které nejlépe vystihují Brno DNES.</div>
     <div class="question-hint">Vyberte nejvýše 3 možnosti</div>
     <div class="options" id="a1-options" data-max="3">
-      <label class="option"><input type="checkbox" name="a1" value="živé a kosmopolitní"><span class="option-label">živé a kosmopolitní</span></label>
-      <label class="option"><input type="checkbox" name="a1" value="kreativní a mladé"><span class="option-label">kreativní a mladé</span></label>
-      <label class="option"><input type="checkbox" name="a1" value="přeplněné a drahé"><span class="option-label">přeplněné a drahé</span></label>
-      <label class="option"><input type="checkbox" name="a1" value="zanedbané a pomalé"><span class="option-label">zanedbané a pomalé</span></label>
-      <label class="option"><input type="checkbox" name="a1" value="bezpečné a klidné"><span class="option-label">bezpečné a klidné</span></label>
-      <label class="option"><input type="checkbox" name="a1" value="příjemné, ale trochu nudné"><span class="option-label">příjemné, ale trochu nudné</span></label>
-      <label class="option"><input type="checkbox" name="a1" value="rozdělené a nerovné"><span class="option-label">rozdělené a nerovné</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="živé"><span class="option-label">živé</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="kosmopolitní"><span class="option-label">kosmopolitní</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="kreativní"><span class="option-label">kreativní</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="mladé"><span class="option-label">mladé</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="přeplněné"><span class="option-label">přeplněné</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="drahé"><span class="option-label">drahé</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="zanedbané"><span class="option-label">zanedbané</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="pomalé"><span class="option-label">pomalé</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="bezpečné"><span class="option-label">bezpečné</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="klidné"><span class="option-label">klidné</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="příjemné"><span class="option-label">příjemné</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="nudné"><span class="option-label">nudné</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="rozdělené"><span class="option-label">rozdělené</span></label>
+      <label class="option"><input type="checkbox" name="a1" value="nerovné"><span class="option-label">nerovné</span></label>
       <label class="option"><input type="checkbox" name="a1" value="jiné"><span class="option-label">jiné</span></label>
       <textarea class="other-input" id="a1-other" placeholder="Upřesněte…"></textarea>
     </div>
@@ -530,16 +602,23 @@
 
   <!-- A2 -->
   <div class="question">
-    <div class="question-text">A2. Vyberte 1–3 pojmy, které by měly vystihovat Brno ZA 10 LET.</div>
+    <div class="question-text">A2. Vyberte až 3 pojmy, které by měly vystihovat Brno ZA 10 LET.</div>
     <div class="question-hint">Vyberte nejvýše 3 možnosti</div>
     <div class="options" id="a2-options" data-max="3">
-      <label class="option"><input type="checkbox" name="a2" value="udržitelné a zelené"><span class="option-label">udržitelné a zelené</span></label>
-      <label class="option"><input type="checkbox" name="a2" value="dostupné pro všechny"><span class="option-label">dostupné pro všechny</span></label>
-      <label class="option"><input type="checkbox" name="a2" value="inovativní a atraktivní pro mladé"><span class="option-label">inovativní a atraktivní pro mladé</span></label>
-      <label class="option"><input type="checkbox" name="a2" value="bezpečné a přívětivé pro rodiny"><span class="option-label">bezpečné a přívětivé pro rodiny</span></label>
-      <label class="option"><input type="checkbox" name="a2" value="propojené a dobře dopravně obsluhované"><span class="option-label">propojené a dobře dopravně obsluhované</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="živé"><span class="option-label">živé</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="kosmopolitní"><span class="option-label">kosmopolitní</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="kreativní"><span class="option-label">kreativní</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="mladé"><span class="option-label">mladé</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="bezpečné"><span class="option-label">bezpečné</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="klidné"><span class="option-label">klidné</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="příjemné"><span class="option-label">příjemné</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="udržitelné"><span class="option-label">udržitelné</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="zelené"><span class="option-label">zelené</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="dostupné"><span class="option-label">dostupné</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="inovativní"><span class="option-label">inovativní</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="propojené"><span class="option-label">propojené</span></label>
+      <label class="option"><input type="checkbox" name="a2" value="otevřené"><span class="option-label">otevřené</span></label>
       <label class="option"><input type="checkbox" name="a2" value="kulturně bohaté"><span class="option-label">kulturně bohaté</span></label>
-      <label class="option"><input type="checkbox" name="a2" value="otevřené a transparentně spravované"><span class="option-label">otevřené a transparentně spravované</span></label>
       <label class="option"><input type="checkbox" name="a2" value="jiné"><span class="option-label">jiné</span></label>
       <textarea class="other-input" id="a2-other" placeholder="Upřesněte…"></textarea>
     </div>
@@ -547,15 +626,15 @@
 
   <!-- A3 -->
   <div class="question">
-    <div class="question-text">A3. Co považujete za největší problémy nebo slabiny Brna?</div>
-    <div class="question-hint">Povinná otázka</div>
+    <div class="question-text">A3. Co jsou největší silné stránky Brna — věci, které fungují dobře?</div>
+    <div class="question-hint">Volitelná otázka</div>
     <textarea id="a3" placeholder="Napište prosím svůj názor…"></textarea>
   </div>
 
   <!-- A4 -->
   <div class="question">
-    <div class="question-text">A4. Co jsou největší silné stránky Brna — věci, které fungují dobře?</div>
-    <div class="question-hint">Volitelná otázka</div>
+    <div class="question-text">A4. Co považujete za největší problémy nebo slabiny Brna?</div>
+    <div class="question-hint">Povinná otázka</div>
     <textarea id="a4" placeholder="Napište prosím svůj názor…"></textarea>
   </div>
 </div>
@@ -569,34 +648,72 @@
 
   <!-- B1 -->
   <div class="question">
-    <div class="question-text">B1. Jak vnímáte současné vedení Brna? Vyberte 1–3 tvrzení, která nejvíce sedí.</div>
-    <div class="question-hint">Vyberte nejvýše 3 možnosti</div>
-    <div class="options" id="b1-options" data-max="3">
-      <label class="option"><input type="checkbox" name="b1" value="za zavřenými dveřmi"><span class="option-label">rozhoduje za zavřenými dveřmi — o důležitých věcech se veřejnost dozví příliš pozdě</span></label>
-      <label class="option"><input type="checkbox" name="b1" value="velké projekty"><span class="option-label">upřednostňuje velké projekty před každodenními potřebami lidí</span></label>
-      <label class="option"><input type="checkbox" name="b1" value="developeři"><span class="option-label">prosazuje zájmy developerů a soukromých investorů</span></label>
-      <label class="option"><input type="checkbox" name="b1" value="komunikuje, ale pomalu"><span class="option-label">komunikuje dobře, ale výsledky přicházejí pomalu</span></label>
-      <label class="option"><input type="checkbox" name="b1" value="dobrá práce"><span class="option-label">odvádí dobrou práci, i když se o tom tolik nemluví</span></label>
-      <label class="option"><input type="checkbox" name="b1" value="neřeší moje témata"><span class="option-label">neřeší témata, která jsou pro mě důležitá</span></label>
-      <label class="option"><input type="checkbox" name="b1" value="nesleduji"><span class="option-label">vedení města příliš nesleduji, nemám vyhraněný názor</span></label>
-      <label class="option"><input type="checkbox" name="b1" value="jiné"><span class="option-label">jiné</span></label>
-      <textarea class="other-input" id="b1-other" placeholder="Upřesněte…"></textarea>
+    <div class="question-text">B1. Jak hodnotíte současné vedení Brna na následujících škálách?</div>
+    <div class="question-hint">Na každém řádku označte, kam vedení zařazujete</div>
+    <div class="semantic-diff">
+      <div class="sd-row">
+        <span class="sd-left">komunikuje otevřeně</span>
+        <div class="sd-scale">
+          <label class="sd-option"><input type="radio" name="b1-kom" value="1"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-kom" value="2"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-kom" value="3"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-kom" value="4"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-kom" value="5"><span class="sd-dot"></span></label>
+        </div>
+        <span class="sd-right">komunikuje uzavřeně</span>
+      </div>
+      <div class="sd-row">
+        <span class="sd-left">kompetentní</span>
+        <div class="sd-scale">
+          <label class="sd-option"><input type="radio" name="b1-komp" value="1"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-komp" value="2"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-komp" value="3"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-komp" value="4"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-komp" value="5"><span class="sd-dot"></span></label>
+        </div>
+        <span class="sd-right">nekompetentní</span>
+      </div>
+      <div class="sd-row">
+        <span class="sd-left">prosazuje veřejný zájem</span>
+        <div class="sd-scale">
+          <label class="sd-option"><input type="radio" name="b1-zajem" value="1"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-zajem" value="2"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-zajem" value="3"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-zajem" value="4"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-zajem" value="5"><span class="sd-dot"></span></label>
+        </div>
+        <span class="sd-right">prosazuje soukromé zájmy</span>
+      </div>
+      <div class="sd-row">
+        <span class="sd-left">přináší výsledky</span>
+        <div class="sd-scale">
+          <label class="sd-option"><input type="radio" name="b1-vys" value="1"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-vys" value="2"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-vys" value="3"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-vys" value="4"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-vys" value="5"><span class="sd-dot"></span></label>
+        </div>
+        <span class="sd-right">nepřináší výsledky</span>
+      </div>
+      <div class="sd-row">
+        <span class="sd-left">upřednostňuje každodenní potřeby</span>
+        <div class="sd-scale">
+          <label class="sd-option"><input type="radio" name="b1-prior" value="1"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-prior" value="2"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-prior" value="3"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-prior" value="4"><span class="sd-dot"></span></label>
+          <label class="sd-option"><input type="radio" name="b1-prior" value="5"><span class="sd-dot"></span></label>
+        </div>
+        <span class="sd-right">upřednostňuje velké projekty</span>
+      </div>
     </div>
   </div>
 
-  <!-- B2 — conditional: B1 ≠ nesleduji -->
-  <div class="question conditional hidden" id="b2-question">
-    <div class="question-text">B2. Co by se mělo změnit na způsobu, jakým vedení města komunikuje a rozhoduje?</div>
-    <div class="question-hint">Vyberte nejvýše 2 možnosti</div>
-    <div class="options" id="b2-options" data-max="2">
-      <label class="option"><input type="checkbox" name="b2" value="informovat předem"><span class="option-label">chci být informován/a předem o velkých záměrech a plánech</span></label>
-      <label class="option"><input type="checkbox" name="b2" value="vyjádřit se dřív"><span class="option-label">chci mít možnost se k záměrům vyjádřit dřív, než je o nich rozhodnuto</span></label>
-      <label class="option"><input type="checkbox" name="b2" value="konkrétní výsledky"><span class="option-label">chci vidět konkrétní výsledky, ne jen oznámení a studie</span></label>
-      <label class="option"><input type="checkbox" name="b2" value="výběrová řízení"><span class="option-label">chci otevřenější výběrová řízení a přehledné zakázky</span></label>
-      <label class="option"><input type="checkbox" name="b2" value="spokojený/á"><span class="option-label">nic zásadního — jsem s tím celkově spokojený/á</span></label>
-      <label class="option"><input type="checkbox" name="b2" value="jiné"><span class="option-label">jiné</span></label>
-      <textarea class="other-input" id="b2-other" placeholder="Upřesněte…"></textarea>
-    </div>
+  <!-- B2 -->
+  <div class="question">
+    <div class="question-text">B2. Co byste současnému vedení Brna nejvíce vytknul/a?</div>
+    <div class="question-hint">Volitelná otázka</div>
+    <textarea id="b2" placeholder="Napište prosím…"></textarea>
   </div>
 
   <!-- B3 -->
@@ -618,11 +735,11 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     BLOK C + D — VELKÉ PROJEKTY + NÁDRAŽÍ
+     BLOK C — VELKÉ PROJEKTY
 ══════════════════════════════════════════════════════════ -->
-<div class="page" id="page-cd">
-  <div class="block-label">Blok C + D</div>
-  <div class="block-title">Velké projekty a nádraží</div>
+<div class="page" id="page-c">
+  <div class="block-label">Blok C</div>
+  <div class="block-title">Velké projekty</div>
 
   <!-- C1 -->
   <div class="question">
@@ -642,22 +759,11 @@
     </div>
   </div>
 
-  <!-- C3 -->
+  <!-- C2 -->
   <div class="question">
-    <div class="question-text">C3. Kde má Brno největší nevyužitý potenciál?</div>
+    <div class="question-text">C2. Kde má Brno největší nevyužitý potenciál?</div>
     <div class="question-hint">Co by mohlo fungovat lépe, ale zatím se to nedaří? (volitelná otázka)</div>
-    <textarea id="c3" placeholder="Napište prosím svůj názor…"></textarea>
-  </div>
-
-  <!-- D1 -->
-  <div class="question">
-    <div class="question-text">D1. Jak vnímáte téma přesunu brněnského nádraží?</div>
-    <div class="options" id="d1-options">
-      <label class="option"><input type="radio" name="d1" value="pro přesun"><span class="option-label">jsem pro přesun — přinese městu rozvoj a novou čtvrť</span></label>
-      <label class="option"><input type="radio" name="d1" value="pro přesun, vadí proces"><span class="option-label">jsem pro přesun, ale tempo a transparentnost přípravy mi vadí</span></label>
-      <label class="option"><input type="radio" name="d1" value="spíše proti"><span class="option-label">jsem spíše proti přesunu</span></label>
-      <label class="option"><input type="radio" name="d1" value="nesleduji"><span class="option-label">téma nesleduji nebo nemám vyhraněný názor</span></label>
-    </div>
+    <textarea id="c2" placeholder="Napište prosím svůj názor…"></textarea>
   </div>
 </div>
 
@@ -729,24 +835,42 @@
   <div class="question">
     <div class="question-text">E6. Co si myslíte o rozšiřování zón rezidentního parkování v Brně?</div>
     <div class="options" id="e6-options">
-      <label class="option"><input type="radio" name="e6" value="souhlasím"><span class="option-label">souhlasím — pomůže uvolnit místa pro rezidenty a omezit průjezdná auta</span></label>
-      <label class="option"><input type="radio" name="e6" value="spíše souhlasím"><span class="option-label">spíše souhlasím, ale obávám se dopadů na lidi bez alternativy</span></label>
-      <label class="option"><input type="radio" name="e6" value="spíše nesouhlasím"><span class="option-label">spíše nesouhlasím</span></label>
-      <label class="option"><input type="radio" name="e6" value="rozhodně nesouhlasím"><span class="option-label">rozhodně nesouhlasím</span></label>
-      <label class="option"><input type="radio" name="e6" value="nemám informace"><span class="option-label">nemám dost informací</span></label>
+      <label class="option"><input type="radio" name="e6" value="jsem rozhodně pro"><span class="option-label">jsem rozhodně pro</span></label>
+      <label class="option"><input type="radio" name="e6" value="jsem spíše pro"><span class="option-label">jsem spíše pro</span></label>
+      <label class="option"><input type="radio" name="e6" value="jsem spíše proti"><span class="option-label">jsem spíše proti</span></label>
+      <label class="option"><input type="radio" name="e6" value="jsem rozhodně proti"><span class="option-label">jsem rozhodně proti</span></label>
+      <label class="option"><input type="radio" name="e6" value="nemám dost informací"><span class="option-label">nemám dost informací</span></label>
     </div>
   </div>
 
-  <!-- E7 -->
+  <!-- E7a -->
   <div class="question">
-    <div class="question-text">E7. Jak byste přijal/a přeměnu části parkovacích míst na veřejný prostor?</div>
+    <div class="question-text">E7a. Jak byste přijal/a přeměnu části parkovacích míst na veřejný prostor?</div>
     <div class="question-hint">Některá evropská města rozšiřují chodníky, přidávají zeleň, lavičky a místa k posezení.</div>
-    <div class="options" id="e7-options">
-      <label class="option"><input type="radio" name="e7" value="rozhodně pro"><span class="option-label">jsem rozhodně pro — ulice by měly sloužit lidem, ne parkujícím autům</span></label>
-      <label class="option"><input type="radio" name="e7" value="spíše pro"><span class="option-label">jsem spíše pro, záleží ale na konkrétní části města a dostupnosti alternativ</span></label>
-      <label class="option"><input type="radio" name="e7" value="spíše proti"><span class="option-label">jsem spíše proti — obávám se dopadů na dostupnost centra</span></label>
-      <label class="option"><input type="radio" name="e7" value="rozhodně proti"><span class="option-label">jsem rozhodně proti — parkovací místa v centru je nutné zachovat</span></label>
-      <label class="option"><input type="radio" name="e7" value="nevyhraněný"><span class="option-label">nemám vyhraněný názor</span></label>
+    <div class="options" id="e7a-options">
+      <label class="option"><input type="radio" name="e7a" value="rozhodně pro"><span class="option-label">jsem rozhodně pro — ulice by měly sloužit lidem, ne parkujícím autům</span></label>
+      <label class="option"><input type="radio" name="e7a" value="spíše pro"><span class="option-label">jsem spíše pro, záleží ale na konkrétní části města a dostupnosti alternativ</span></label>
+      <label class="option"><input type="radio" name="e7a" value="spíše proti"><span class="option-label">jsem spíše proti — obávám se dopadů na dostupnost centra</span></label>
+      <label class="option"><input type="radio" name="e7a" value="rozhodně proti"><span class="option-label">jsem rozhodně proti — parkovací místa v centru je nutné zachovat</span></label>
+      <label class="option"><input type="radio" name="e7a" value="nevyhraněný"><span class="option-label">nemám vyhraněný názor</span></label>
+    </div>
+  </div>
+
+  <!-- E7b -->
+  <div class="question">
+    <div class="question-text">E7b. Co vidíte jako hlavní přínos nebo hlavní riziko takového přístupu?</div>
+    <div class="question-hint">Volitelná otázka</div>
+    <textarea id="e7b" placeholder="Napište prosím…"></textarea>
+  </div>
+
+  <!-- E8 -->
+  <div class="question">
+    <div class="question-text">E8. Jak vnímáte téma přesunu brněnského nádraží?</div>
+    <div class="options" id="e8-options">
+      <label class="option"><input type="radio" name="e8" value="pro přesun"><span class="option-label">jsem pro přesun — přinese městu rozvoj a novou čtvrť</span></label>
+      <label class="option"><input type="radio" name="e8" value="pro přesun, vadí proces"><span class="option-label">jsem pro přesun, ale tempo a transparentnost přípravy mi vadí</span></label>
+      <label class="option"><input type="radio" name="e8" value="spíše proti"><span class="option-label">jsem spíše proti přesunu</span></label>
+      <label class="option"><input type="radio" name="e8" value="nesleduji"><span class="option-label">téma nesleduji nebo nemám vyhraněný názor</span></label>
     </div>
   </div>
 </div>
@@ -758,26 +882,38 @@
   <div class="block-label">Blok F</div>
   <div class="block-title">Bydlení</div>
 
-  <!-- F1 -->
+  <!-- F1a -->
   <div class="question">
-    <div class="question-text">F1. Jak důležité je pro vás téma dostupnosti bydlení v Brně?</div>
-    <div class="options" id="f1-options">
-      <label class="option"><input type="radio" name="f1" value="zásadní"><span class="option-label">zásadní — sám/sama to řeším nebo brzy budu řešit</span></label>
-      <label class="option"><input type="radio" name="f1" value="důležité"><span class="option-label">důležité — týká se lidí kolem mě</span></label>
-      <label class="option"><input type="radio" name="f1" value="společenský problém"><span class="option-label">vnímám to jako společenský problém, i když se mě přímo netýká</span></label>
-      <label class="option"><input type="radio" name="f1" value="není priorita"><span class="option-label">není pro mě prioritou</span></label>
+    <div class="question-text">F1a. Jak závažné téma je podle vás dostupnost bydlení v Brně jako celkový společenský problém?</div>
+    <div class="options" id="f1a-options">
+      <label class="option"><input type="radio" name="f1a" value="velmi závažné"><span class="option-label">velmi závažné</span></label>
+      <label class="option"><input type="radio" name="f1a" value="spíše závažné"><span class="option-label">spíše závažné</span></label>
+      <label class="option"><input type="radio" name="f1a" value="spíše nezávažné"><span class="option-label">spíše nezávažné</span></label>
+      <label class="option"><input type="radio" name="f1a" value="vůbec nezávažné"><span class="option-label">vůbec nezávažné</span></label>
+      <label class="option"><input type="radio" name="f1a" value="nemám přehled"><span class="option-label">nemám přehled</span></label>
     </div>
   </div>
 
-  <!-- F3 — conditional: F1 = odpověď 1–3 -->
+  <!-- F1b -->
+  <div class="question">
+    <div class="question-text">F1b. Týká se situace s dostupností bydlení přímo vás nebo vašich blízkých?</div>
+    <div class="options" id="f1b-options">
+      <label class="option"><input type="radio" name="f1b" value="přímo mě"><span class="option-label">ano, přímo mě — bydlení aktivně řeším nebo budu řešit</span></label>
+      <label class="option"><input type="radio" name="f1b" value="blízkých"><span class="option-label">ano, týká se to blízkých lidí kolem mě</span></label>
+      <label class="option"><input type="radio" name="f1b" value="ne"><span class="option-label">ne, osobně se mě netýká</span></label>
+    </div>
+  </div>
+
+  <!-- F3 — conditional: F1a = velmi závažné nebo spíše závažné -->
   <div class="question conditional hidden" id="f3-question">
     <div class="question-text">F3. Co by město mělo dělat pro zvýšení dostupnosti bydlení?</div>
-    <div class="question-hint">Vyberte nejvýše 2 možnosti</div>
-    <div class="options" id="f3-options" data-max="2">
+    <div class="question-hint">Vyberte nejvýše 3 možnosti</div>
+    <div class="options" id="f3-options" data-max="3">
       <label class="option"><input type="checkbox" name="f3" value="nájemní byty"><span class="option-label">stavět vlastní nájemní byty</span></label>
       <label class="option"><input type="checkbox" name="f3" value="prázdné byty"><span class="option-label">více využít prázdné byty ve vlastnictví města</span></label>
       <label class="option"><input type="checkbox" name="f3" value="družstevní výstavba"><span class="option-label">podporovat družstevní výstavbu</span></label>
       <label class="option"><input type="checkbox" name="f3" value="podíl dostupných bytů"><span class="option-label">podmínit větší developerské projekty podílem dostupných bytů</span></label>
+      <label class="option"><input type="checkbox" name="f3" value="regulace nájmů"><span class="option-label">regulovat výši nájmů v obecních bytech</span></label>
       <label class="option"><input type="checkbox" name="f3" value="nevím"><span class="option-label">nevím</span></label>
       <label class="option"><input type="checkbox" name="f3" value="jiné"><span class="option-label">jiné</span></label>
       <textarea class="other-input" id="f3-other" placeholder="Upřesněte…"></textarea>
@@ -811,10 +947,9 @@
     <div class="question conditional hidden" id="g1a-question">
       <div class="question-text">G1a. Zaznamenali jste problémy s dostupností míst ve školce v Brně?</div>
       <div class="options" id="g1a-options">
-        <label class="option"><input type="radio" name="g1a" value="ano"><span class="option-label">ano, přímo nás to trápí nebo trápilo</span></label>
-        <label class="option"><input type="radio" name="g1a" value="ne"><span class="option-label">ne, místo jsme sehnali bez větších problémů</span></label>
-        <label class="option"><input type="radio" name="g1a" value="jiná zkušenost"><span class="option-label">jiná zkušenost</span></label>
-        <textarea class="other-input" id="g1a-other" placeholder="Upřesněte…"></textarea>
+        <label class="option"><input type="radio" name="g1a" value="ano, přímo u nás"><span class="option-label">ano, přímo u nás</span></label>
+        <label class="option"><input type="radio" name="g1a" value="ano, v okolí nebo u známých"><span class="option-label">ano, v okolí nebo u známých</span></label>
+        <label class="option"><input type="radio" name="g1a" value="ne"><span class="option-label">ne</span></label>
       </div>
     </div>
 
@@ -834,11 +969,12 @@
       <div class="question-text">G2. Co pro rodiny s dětmi v Brně nejvíce chybí nebo potřebuje zlepšit?</div>
       <div class="question-hint">Vyberte vše, co platí</div>
       <div class="options" id="g2-options">
-        <label class="option"><input type="checkbox" name="g2" value="jesle a školky"><span class="option-label">dostatečná kapacita jeslí a školek</span></label>
+        <label class="option"><input type="checkbox" name="g2" value="jesle a školky"><span class="option-label">dostatečná kapacita cenově dostupných jeslí, školek a dětských skupin</span></label>
         <label class="option"><input type="checkbox" name="g2" value="základní školy"><span class="option-label">kapacita a kvalita základních škol</span></label>
         <label class="option"><input type="checkbox" name="g2" value="hřiště"><span class="option-label">dětská hřiště a bezpečné veřejné prostory</span></label>
         <label class="option"><input type="checkbox" name="g2" value="bezpečné cesty"><span class="option-label">bezpečné cesty do školy (chodníky, přechody, cyklostezky)</span></label>
         <label class="option"><input type="checkbox" name="g2" value="volnočasové aktivity"><span class="option-label">dostupnost a cena volnočasových kroužků a aktivit</span></label>
+        <label class="option"><input type="checkbox" name="g2" value="lékařská péče"><span class="option-label">dostupnost lékařské a psychologické péče pro děti</span></label>
         <label class="option"><input type="checkbox" name="g2" value="bytová nouze"><span class="option-label">podpora rodin v bytové nouzi nebo s vysokým nájmem</span></label>
         <label class="option"><input type="checkbox" name="g2" value="jiné"><span class="option-label">jiné</span></label>
         <textarea class="other-input" id="g2-other" placeholder="Upřesněte…"></textarea>
@@ -874,10 +1010,10 @@
   <div class="question">
     <div class="question-text">H1a. Jak hodnotíte dostupnost sportovišť a míst pro pohyb a volný čas v Brně?</div>
     <div class="options" id="h1a-options">
-      <label class="option"><input type="radio" name="h1a" value="velmi spokojen/a"><span class="option-label">jsem velmi spokojen/a</span></label>
       <label class="option"><input type="radio" name="h1a" value="spokojen/a"><span class="option-label">jsem spokojen/a</span></label>
+      <label class="option"><input type="radio" name="h1a" value="spíše spokojen/a"><span class="option-label">jsem spíše spokojen/a</span></label>
+      <label class="option"><input type="radio" name="h1a" value="spíše nespokojen/a"><span class="option-label">jsem spíše nespokojen/a</span></label>
       <label class="option"><input type="radio" name="h1a" value="nespokojen/a"><span class="option-label">jsem nespokojen/a</span></label>
-      <label class="option"><input type="radio" name="h1a" value="velmi nespokojen/a"><span class="option-label">jsem velmi nespokojen/a</span></label>
       <label class="option"><input type="radio" name="h1a" value="nezajímá"><span class="option-label">toto téma mě nezajímá</span></label>
     </div>
     <div class="inline-followup hidden" id="h1b-question">
@@ -911,53 +1047,14 @@
   <div class="question">
     <div class="question-text">I1. Cítíte se v Brně bezpečně?</div>
     <div class="options" id="i1-options">
-      <label class="option"><input type="radio" name="i1" value="většinou ano"><span class="option-label">většinou ano</span></label>
-      <label class="option"><input type="radio" name="i1" value="spíše ano"><span class="option-label">spíše ano</span></label>
-      <label class="option"><input type="radio" name="i1" value="spíše ne"><span class="option-label">spíše ne</span></label>
-      <label class="option"><input type="radio" name="i1" value="většinou ne"><span class="option-label">většinou ne</span></label>
+      <label class="option"><input type="radio" name="i1" value="naprosto bezpečně"><span class="option-label">naprosto bezpečně</span></label>
+      <label class="option"><input type="radio" name="i1" value="spíše bezpečně"><span class="option-label">spíše bezpečně</span></label>
+      <label class="option"><input type="radio" name="i1" value="spíše nebezpečně"><span class="option-label">spíše nebezpečně</span></label>
+      <label class="option"><input type="radio" name="i1" value="velmi nebezpečně"><span class="option-label">velmi nebezpečně</span></label>
     </div>
     <div class="inline-followup hidden" id="i2-question">
       <div class="followup-label">I2. Co je hlavním zdrojem pocitu nebezpečí nebo nepohody? Máte na mysli konkrétní místo?</div>
       <textarea id="i2" placeholder="Napište prosím…"></textarea>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════
-     BLOK J + K — ŽIVOTNÍ SITUACE + CELOSPOLEČENSKÝ POHLED
-══════════════════════════════════════════════════════════ -->
-<div class="page" id="page-jk">
-  <div class="block-label">Blok J + K</div>
-  <div class="block-title">Vaše situace a společnost</div>
-
-  <!-- J1 -->
-  <div class="question">
-    <div class="question-text">J1. Jak byste popsal/a svoji aktuální ekonomickou situaci?</div>
-    <div class="options" id="j1-options">
-      <label class="option"><input type="radio" name="j1" value="pohodlná"><span class="option-label">pohodlná — vychází mi peníze a mám úspory</span></label>
-      <label class="option"><input type="radio" name="j1" value="přiměřená"><span class="option-label">přiměřená — vychází mi, ale šetřím</span></label>
-      <label class="option"><input type="radio" name="j1" value="napjatá"><span class="option-label">napjatá — musím každý měsíc pečlivě plánovat</span></label>
-      <label class="option"><input type="radio" name="j1" value="tíživá"><span class="option-label">tíživá — mám problém pokrýt základní výdaje</span></label>
-      <label class="option"><input type="radio" name="j1" value="nechci odpovědět"><span class="option-label">nechci odpovědět</span></label>
-    </div>
-  </div>
-
-  <!-- K1 -->
-  <div class="question">
-    <div class="question-text">K1. Které z následujících jevů vás osobně znepokojují?</div>
-    <div class="question-hint">Vyberte nejvýše 3 možnosti</div>
-    <div class="options" id="k1-options" data-max="3">
-      <label class="option"><input type="checkbox" name="k1" value="oslabování demokracie"><span class="option-label">oslabování demokracie a právního státu v ČR</span></label>
-      <label class="option"><input type="checkbox" name="k1" value="geopolitická nestabilita"><span class="option-label">geopolitická nestabilita a změny v mezinárodním uspořádání</span></label>
-      <label class="option"><input type="checkbox" name="k1" value="korupce"><span class="option-label">korupce a klientelismus ve veřejné správě</span></label>
-      <label class="option"><input type="checkbox" name="k1" value="zdražování"><span class="option-label">zdražování, inflace a růst nákladů na bydlení</span></label>
-      <label class="option"><input type="checkbox" name="k1" value="války"><span class="option-label">války a násilí ve světě</span></label>
-      <label class="option"><input type="checkbox" name="k1" value="klimatická změna"><span class="option-label">klimatická změna a extrémní výkyvy počasí</span></label>
-      <label class="option"><input type="checkbox" name="k1" value="extremismus"><span class="option-label">extremismus a polarizace české společnosti</span></label>
-      <label class="option"><input type="checkbox" name="k1" value="migrace"><span class="option-label">migrace</span></label>
-      <label class="option"><input type="checkbox" name="k1" value="žádné"><span class="option-label">žádné z výše uvedených výrazněji</span></label>
-      <label class="option"><input type="checkbox" name="k1" value="jiné"><span class="option-label">jiné</span></label>
-      <textarea class="other-input" id="k1-other" placeholder="Upřesněte…"></textarea>
     </div>
   </div>
 </div>
@@ -985,6 +1082,44 @@
     <div class="question-text">L3. Máte nějaký vzkaz nebo téma, které se v dotazníku neobjevilo?</div>
     <div class="question-hint">Volitelná otázka</div>
     <textarea id="l3" placeholder="Napište prosím…"></textarea>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     BLOK K — CELOSPOLEČENSKÝ POHLED
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-k">
+  <div class="block-label">Blok K</div>
+  <div class="block-title">Celospolečenský pohled</div>
+
+  <!-- K1 -->
+  <div class="question">
+    <div class="question-text">K1. Které z následujících jevů vás osobně znepokojují?</div>
+    <div class="question-hint">Vyberte nejvýše 3 možnosti</div>
+    <div class="options" id="k1-options" data-max="3">
+      <label class="option"><input type="checkbox" name="k1" value="oslabování demokracie"><span class="option-label">oslabování demokracie a právního státu v ČR</span></label>
+      <label class="option"><input type="checkbox" name="k1" value="geopolitická nestabilita"><span class="option-label">geopolitická nestabilita a nárůst autoritářství</span></label>
+      <label class="option"><input type="checkbox" name="k1" value="korupce"><span class="option-label">korupce a klientelismus ve veřejné správě</span></label>
+      <label class="option"><input type="checkbox" name="k1" value="zdražování"><span class="option-label">zdražování, inflace a růst nákladů na bydlení</span></label>
+      <label class="option"><input type="checkbox" name="k1" value="války"><span class="option-label">války a násilí ve světě</span></label>
+      <label class="option"><input type="checkbox" name="k1" value="klimatická změna"><span class="option-label">klimatická změna a extrémní výkyvy počasí</span></label>
+      <label class="option"><input type="checkbox" name="k1" value="extremismus"><span class="option-label">extremismus a polarizace české společnosti</span></label>
+      <label class="option"><input type="checkbox" name="k1" value="migrace"><span class="option-label">migrace</span></label>
+      <label class="option"><input type="checkbox" name="k1" value="žádné"><span class="option-label">žádné z výše uvedených výrazněji</span></label>
+      <label class="option"><input type="checkbox" name="k1" value="jiné"><span class="option-label">jiné</span></label>
+      <textarea class="other-input" id="k1-other" placeholder="Upřesněte…"></textarea>
+    </div>
+  </div>
+
+  <!-- K2 -->
+  <div class="question">
+    <div class="question-text">K2. Jak velký vliv má celostátní politická situace na to, koho zvolíte do brněnského zastupitelstva?</div>
+    <div class="options" id="k2-options">
+      <label class="option"><input type="radio" name="k2" value="velký"><span class="option-label">velký — komunální volby vnímám v kontextu celostátního dění</span></label>
+      <label class="option"><input type="radio" name="k2" value="částečný"><span class="option-label">částečný — záleží mi na obou rovinách</span></label>
+      <label class="option"><input type="radio" name="k2" value="žádný"><span class="option-label">žádný — komunální a celostátní politiku striktně odděluji</span></label>
+      <label class="option"><input type="radio" name="k2" value="nevím"><span class="option-label">nevím</span></label>
+    </div>
   </div>
 </div>
 
@@ -1017,6 +1152,18 @@
       <label class="option"><input type="radio" name="n2" value="45-54"><span class="option-label">45–54</span></label>
       <label class="option"><input type="radio" name="n2" value="55-64"><span class="option-label">55–64</span></label>
       <label class="option"><input type="radio" name="n2" value="65+"><span class="option-label">65+</span></label>
+    </div>
+  </div>
+
+  <!-- N3 -->
+  <div class="question">
+    <div class="question-text">N3. Jak byste popsal/a svoji aktuální ekonomickou situaci?</div>
+    <div class="options" id="n3-options">
+      <label class="option"><input type="radio" name="n3" value="pohodlná"><span class="option-label">pohodlná — vychází mi peníze, mohu spořit a mám rezervy</span></label>
+      <label class="option"><input type="radio" name="n3" value="přiměřená"><span class="option-label">přiměřená — vychází mi, ale na spoření nebo rezervy nezbývá</span></label>
+      <label class="option"><input type="radio" name="n3" value="napjatá"><span class="option-label">napjatá — příjmy pokryjí základní výdaje, ale nic navíc</span></label>
+      <label class="option"><input type="radio" name="n3" value="tíživá"><span class="option-label">tíživá — mám problém pokrýt i základní výdaje</span></label>
+      <label class="option"><input type="radio" name="n3" value="nechci odpovědět"><span class="option-label">nechci odpovědět</span></label>
     </div>
   </div>
 
@@ -1149,9 +1296,9 @@
 <script>
 // ─── Page order ───────────────────────────────────────────────────
 const PAGES = [
-  'page-intro', 'page-a', 'page-b', 'page-cd',
+  'page-intro', 'page-a', 'page-b', 'page-c',
   'page-e', 'page-f', 'page-g', 'page-h',
-  'page-i', 'page-jk', 'page-l', 'page-n', 'page-end'
+  'page-i', 'page-l', 'page-k', 'page-n', 'page-end'
 ];
 const CONTENT_PAGES = PAGES.slice(1, -1); // exclude intro + end
 let currentIdx = 0;
@@ -1161,16 +1308,17 @@ let currentIdx = 0;
 // visibleCheck: id of element — skip validation if that element has .hidden
 const REQUIRED = {
   'page-a': [
-    { type: 'textarea', elId: 'a3' },
+    { type: 'textarea', elId: 'a4' },
   ],
   'page-b': [],
+  'page-c': [],
   'page-e': [
     { type: 'checkbox', name: 'e1' },  // větví E2, E4a
     { type: 'radio',    name: 'e3a' }, // větví E3b
     { type: 'radio',    name: 'e4a', visibleCheck: 'e4a-question' }, // větví E4b
   ],
   'page-f': [
-    { type: 'radio', name: 'f1' }, // větví F3
+    { type: 'radio', name: 'f1a' }, // větví F3
   ],
   'page-g': [
     { type: 'radio', name: 'g-gate' }, // větví celý blok G
@@ -1367,6 +1515,16 @@ function setupOptionStyling() {
   document.querySelectorAll('textarea').forEach(ta => {
     ta.addEventListener('input', () => clearError(ta));
   });
+
+  // Semantic diff styling
+  document.querySelectorAll('.sd-option input').forEach(inp => {
+    inp.addEventListener('change', () => {
+      document.querySelectorAll(`input[name="${inp.name}"]`).forEach(other => {
+        other.closest('.sd-option')?.classList.remove('sd-selected');
+      });
+      inp.closest('.sd-option').classList.add('sd-selected');
+    });
+  });
 }
 
 // ─── Max-select enforcement ───────────────────────────────────────
@@ -1421,12 +1579,6 @@ function vals(name) {
   return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(i => i.value);
 }
 
-// B1 → B2
-on('input[name="b1"]', 'change', () => {
-  const nesleduji = vals('b1').includes('nesleduji');
-  toggle('b2-question', !nesleduji);
-});
-
 // E1 → E2, E4a
 on('input[name="e1"]', 'change', () => {
   toggle('e2-question', vals('e1').includes('auto'));
@@ -1447,9 +1599,10 @@ on('input[name="e4a"]', 'change', () => {
   toggle('e4b-question', v === 'ano' || v === 'občas');
 });
 
-// F1 → F3
-on('input[name="f1"]', 'change', () => {
-  toggle('f3-question', val('f1') !== 'není priorita');
+// F1a → F3
+on('input[name="f1a"]', 'change', () => {
+  const v = val('f1a');
+  toggle('f3-question', v === 'velmi závažné' || v === 'spíše závažné');
 });
 
 // G gateway → G questions, G1a, G1b
@@ -1463,24 +1616,16 @@ on('input[name="g-gate"]', 'change', () => {
   }
 });
 
-// G1a jiná zkušenost
-on('input[name="g1a"]', 'change', () => {
-  const inp = document.getElementById('g1a-other');
-  const show = val('g1a') === 'jiná zkušenost';
-  inp?.classList.toggle('visible', show);
-  if (!show && inp) inp.value = '';
-});
-
 // H1a → H1b
 on('input[name="h1a"]', 'change', () => {
   const v = val('h1a');
-  toggle('h1b-question', v === 'nespokojen/a' || v === 'velmi nespokojen/a');
+  toggle('h1b-question', v === 'spíše nespokojen/a' || v === 'nespokojen/a');
 });
 
 // I1 → I2
 on('input[name="i1"]', 'change', () => {
   const v = val('i1');
-  toggle('i2-question', v === 'spíše ne' || v === 'většinou ne');
+  toggle('i2-question', v === 'spíše nebezpečně' || v === 'velmi nebezpečně');
 });
 
 // ─── Init ─────────────────────────────────────────────────────────
@@ -1496,20 +1641,20 @@ const QUESTION_META = {
     reasoning: 'Doplňuje A1. Klíčová je křížová analýza: lidé, kteří dnes označí „přeplněné a drahé" a zároveň chtějí „dostupné pro všechny", jsou přirozený segment pro sdělení o bydlení. Pojmy z A2 jsou použitelné jako claim nebo vizuální motiv kampaně.'
   },
   'A3.': {
-    required: true,
-    reasoning: 'Nenavádí — nechává mluvit respondenta. Odpovědi kódujeme do tematických kategorií a porovnáme se strukturovanými otázkami. Pokud se opakuje téma, které se neobjeví jinde, je to signál pro program i komunikaci.'
+    required: false,
+    reasoning: 'Pozitivní otázka záměrně na prvním místě — respondent začíná v konstruktivním módu. Pomáhá identifikovat, co lidé cení a nechtějí ztratit.'
   },
   'A4.': {
-    required: false,
-    reasoning: 'Rovnováha k A3. Pomáhá identifikovat, co lidé cení a nechtějí ztratit. Odlišuje silné stránky od nevyužitého potenciálu, na který se ptáme v C3.'
+    required: true,
+    reasoning: 'Povinná otázka po pozitivní. Odpovědi kódujeme do tematických kategorií a porovnáme se strukturovanými otázkami — pokud se opakuje téma, které se neobjeví jinde, je to signál pro program i komunikaci.'
   },
   'B1.': {
     required: false,
-    reasoning: 'Zachytí převládající narativ o vedení města — bez stranického rámování, čistě hodnotový. Kombinace s N6 (volební chování) ukáže, zda nespokojenost přichází od dosavadních nevoličů Zelených (potenciál oslovení) nebo od vlastní základny (riziko úniku). Tvrzení jsou formulována jako konkrétní kritika, ne abstraktní hodnocení.'
+    reasoning: 'Sémantický diferenciál nahrazuje původní nevyvážený set výroků. Neutrální výchozí bod, zachycuje hodnocení na více dimenzích zvlášť, data jsou srovnatelná a statisticky zpracovatelná. Kombinace škál odhalí, kde je vedení vnímáno jinak — např. kompetentní, ale uzavřené.'
   },
   'B2.': {
     required: false,
-    reasoning: 'Pokrývá víc než jen komunikaci — míchá komunikaci (informovat předem) s rozhodováním (výběrová řízení, výsledky). Pokud dominuje „chci být informován předem", otevírá téma transparentnosti. Kombinace B1+B2 definuje, jaký narativ má smysl použít. Kandidát na vyřazení: data z B1 jsou pro kampaň dostačující.'
+    reasoning: 'Explicitně kritická otázka — ale přiznaně. Kombinace s B1 umožní porovnat, zda otevřená kritika odpovídá hodnocení na škálách.'
   },
   'B3.': {
     required: false,
@@ -1519,13 +1664,9 @@ const QUESTION_META = {
     required: false,
     reasoning: 'Výběr top 3 místo seřazování — kognitivně méně náročné. Kombinace s B1 odhalí, zda lidé kritizující vedení za velké projekty sami velké projekty podporují. Pokud bydlení a MHD dominují nad stadiony a lanovkou, je to argument pro kampaň „my víme, co je skutečná priorita".'
   },
-  'C3.': {
+  'C2.': {
     required: false,
     reasoning: 'Konstruktivnější formulace než „co prokaučovalo" — orientuje respondenta na budoucnost, ne na přiřazování viny. Pro opoziční narativ cenné: pokud se opakují konkrétní příklady, lze je použít jako „co bychom udělali jinak".'
-  },
-  'D1.': {
-    required: false,
-    reasoning: 'Zelení zastávají kritický postoj k přesunu nádraží — otázka měří, jak je téma stále živé ve veřejnosti. Segment „pro přesun, ale nespokojený s procesem" je zvlášť zajímavý: může rezonovat s argumenty o transparentnosti bez ohledu na výsledný postoj k přesunu samotnému.'
   },
   'E1.': {
     required: true,
@@ -1547,13 +1688,21 @@ const QUESTION_META = {
     required: false,
     reasoning: 'Rezidentní zóny jsou v Brně politicky citlivé téma. Data ukáží míru podpory i charakter odporu — zda jde o principiální odmítnutí nebo o obavu z konkrétních dopadů. Kombinace s E7 dá koherentní obraz postoje k využití veřejného prostoru.'
   },
-  'E7.': {
+  'E7a.': {
     required: false,
-    reasoning: 'Testuje podporu pro konkrétní politiku, která je pro Zelené přirozená, ale politicky citlivá. Formulace záměrně neutrální — „mění se na veřejný prostor", ne „odstraní se parkoviště". Středová odpověď zachytí respondenty, které lze přesvědčit konkrétními příklady.'
+    reasoning: 'Testuje podporu pro konkrétní politiku, která je pro Zelené přirozená, ale politicky citlivá. Formulace záměrně neutrální — „mění se na veřejný prostor", ne „odstraní se parkoviště". Středová odpověď zachytí respondenty, které lze přesvědčit konkrétními příklady. E7b zachycuje otevřenou argumentaci respondentů.'
   },
-  'F1.': {
+  'E8.': {
+    required: false,
+    reasoning: 'Zelení zastávají kritický postoj k přesunu nádraží — tato otázka neslouží k zjišťování vlastního postoje strany, ale ke změření toho, jak je téma stále živé ve veřejnosti. Segment „pro přesun, ale nespokojený s procesem" může rezonovat s argumenty o transparentnosti. Data pomohou rozhodnout, zda a jak nádraží v kampani komunikovat.'
+  },
+  'F1a.': {
     required: true,
-    reasoning: 'Segmentuje respondenty podle osobní naléhavosti. Kombinace s věkem odhalí, zda jde primárně o mladé nebo i střední generaci. Pokud i lidé, kteří sami bydlení neřeší, označují téma za „společenský problém", je to signál pro empatickou kampaň.'
+    reasoning: 'F1a měří celkovou závažnost bez osobního kontextu. Kombinace s F1b odliší různé typy angažovanosti a umožní přesnější segmentaci.'
+  },
+  'F1b.': {
+    required: false,
+    reasoning: 'F1b měří osobní relevanci. Kombinace s F1a odhalí, jak osobní zkušenost ovlivňuje vnímání závažnosti problému.'
   },
   'F3.': {
     required: false,
@@ -1594,6 +1743,10 @@ const QUESTION_META = {
   'K1.': {
     required: false,
     reasoning: 'Zachytí hodnotový rámec a obavy respondentů. Kombinace s N6 ukáže, co motivuje různé segmenty — zda jsou voliči Zelených primárně motivováni klimatem, demokracií nebo ekonomickými obavami. Položka „migrace" je záměrně neutrální — nechává respondenta, aby si sám definoval, jak téma vnímá.'
+  },
+  'K2.': {
+    required: false,
+    reasoning: 'Identifikuje segment volící komunálně podle celostátního klíče. Pomůže kalibrovat, jak moc propojovat brněnskou kampaň se stranickým storytellingem. Kandidát na vyřazení: méně důležité než K1.'
   },
   'L1.': {
     required: false,
@@ -1702,7 +1855,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Other-input reveals
   const others = [
     ['a1','a1-other'], ['a2','a2-other'],
-    ['b1','b1-other'], ['b2','b2-other'], ['b3','b3-other'],
+    ['b3','b3-other'],
     ['e1','e1-other'], ['e2','e2-other'],
     ['f3','f3-other'],
     ['g2','g2-other'], ['g3','g3-other'],
