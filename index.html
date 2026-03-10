@@ -280,12 +280,30 @@
     .conditional { transition: opacity 0.2s; }
 
     /* ── NAVIGATION ── */
+    /* ── VALIDATION ── */
+    .question.has-error,
+    .gateway-card.has-error {
+      border-color: #d9534f;
+      background: #fff8f7;
+    }
+    .question.has-error .question-text,
+    .gateway-card.has-error .question-text {
+      color: #d9534f;
+    }
+    .error-msg {
+      text-align: center;
+      font-size: 13px;
+      color: #d9534f;
+      font-weight: 500;
+      padding-bottom: 6px;
+    }
+
     .nav {
       position: fixed;
       bottom: 0; left: 0; right: 0;
       background: var(--surface);
       border-top: 1px solid var(--border);
-      padding: 10px 16px max(14px, env(safe-area-inset-bottom));
+      padding: 8px 16px max(14px, env(safe-area-inset-bottom));
       z-index: 100;
     }
     .nav-inner {
@@ -1042,6 +1060,7 @@
      NAVIGATION BAR
 ══════════════════════════════════════════════════════════ -->
 <div class="nav">
+  <div class="error-msg hidden" id="errorMsg"></div>
   <div class="nav-inner">
     <button class="btn btn-back" id="btnBack" onclick="goBack()" disabled>← Zpět</button>
     <button class="btn btn-next" id="btnNext" onclick="goNext()">Pokračovat →</button>
@@ -1061,8 +1080,122 @@ const PAGES = [
 const CONTENT_PAGES = PAGES.slice(1, -1); // exclude intro + end
 let currentIdx = 0;
 
+// ─── Required fields per page ─────────────────────────────────────
+// type: 'radio' | 'checkbox' | 'textarea'
+// visibleCheck: id of element — skip validation if that element has .hidden
+const REQUIRED = {
+  'page-a': [
+    { type: 'checkbox', name: 'a1' },
+    { type: 'checkbox', name: 'a2' },
+    { type: 'textarea', elId: 'a3' },
+  ],
+  'page-b': [
+    { type: 'checkbox', name: 'b1' },
+    { type: 'checkbox', name: 'b2', visibleCheck: 'b2-question' },
+    { type: 'checkbox', name: 'b3' },
+  ],
+  'page-cd': [
+    { type: 'checkbox', name: 'c1', min: 3 },
+    { type: 'radio',    name: 'd1' },
+  ],
+  'page-e': [
+    { type: 'checkbox', name: 'e1' },
+    { type: 'radio',    name: 'e3a' },
+    { type: 'radio',    name: 'e6' },
+    { type: 'radio',    name: 'e7' },
+  ],
+  'page-f': [
+    { type: 'radio', name: 'f1' },
+  ],
+  'page-g': [
+    { type: 'radio',    name: 'g-gate' },
+    { type: 'radio',    name: 'g1a', visibleCheck: 'g1a-question' },
+    { type: 'radio',    name: 'g1b', visibleCheck: 'g1b-question' },
+    { type: 'checkbox', name: 'g2',  visibleCheck: 'g-questions' },
+    { type: 'checkbox', name: 'g3',  visibleCheck: 'g-questions' },
+  ],
+  'page-h': [
+    { type: 'radio', name: 'h1a' },
+    { type: 'radio', name: 'h2' },
+  ],
+  'page-i': [
+    { type: 'radio', name: 'i1' },
+  ],
+  'page-jk': [
+    { type: 'radio',    name: 'j1' },
+    { type: 'checkbox', name: 'k1' },
+  ],
+  'page-n': [
+    { type: 'radio', name: 'n1' },
+    { type: 'radio', name: 'n2' },
+    { type: 'radio', name: 'n4' },
+  ],
+};
+
+function isVisible(elId) {
+  const el = document.getElementById(elId);
+  return el && !el.classList.contains('hidden');
+}
+
+function validatePage() {
+  const pageId = PAGES[currentIdx];
+  const fields = REQUIRED[pageId] || [];
+  const errors = [];
+
+  // Clear previous errors
+  document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+
+  for (const field of fields) {
+    if (field.visibleCheck && !isVisible(field.visibleCheck)) continue;
+
+    let ok = false;
+    if (field.type === 'radio') {
+      ok = !!document.querySelector(`input[name="${field.name}"]:checked`);
+    } else if (field.type === 'checkbox') {
+      ok = document.querySelectorAll(`input[name="${field.name}"]:checked`).length >= (field.min || 1);
+    } else if (field.type === 'textarea') {
+      ok = (document.getElementById(field.elId)?.value.trim().length || 0) > 0;
+    }
+
+    if (!ok) errors.push(field);
+  }
+
+  // Highlight errors
+  errors.forEach(field => {
+    let anchor;
+    if (field.type === 'textarea') {
+      anchor = document.getElementById(field.elId);
+    } else {
+      anchor = document.querySelector(`input[name="${field.name}"]`);
+    }
+    const card = anchor?.closest('.question, .gateway-card');
+    if (card) card.classList.add('has-error');
+  });
+
+  if (errors.length > 0) {
+    // Scroll to first error
+    const firstCard = document.querySelector('.has-error');
+    if (firstCard) firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    const msg = document.getElementById('errorMsg');
+    msg.textContent = 'Prosím vyplňte označená pole.';
+    msg.classList.remove('hidden');
+    return false;
+  }
+
+  document.getElementById('errorMsg').classList.add('hidden');
+  return true;
+}
+
 // ─── Navigation ───────────────────────────────────────────────────
 function goNext() {
+  if (PAGES[currentIdx] === 'page-intro') {
+    currentIdx++;
+    showPage();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  if (!validatePage()) return;
   if (currentIdx < PAGES.length - 1) {
     currentIdx++;
     showPage();
@@ -1158,18 +1291,34 @@ function submitForm() {
 }
 
 // ─── Option visual highlight ──────────────────────────────────────
+function clearError(inp) {
+  const card = inp.closest('.question, .gateway-card');
+  if (card?.classList.contains('has-error')) {
+    card.classList.remove('has-error');
+    // Hide error message if no more errors on page
+    if (!document.querySelector('.has-error')) {
+      document.getElementById('errorMsg').classList.add('hidden');
+    }
+  }
+}
+
 function setupOptionStyling() {
   document.querySelectorAll('.option input').forEach(inp => {
     inp.addEventListener('change', () => {
       if (inp.type === 'radio') {
-        // deselect all in same name group
         document.querySelectorAll(`input[name="${inp.name}"]`).forEach(other => {
           other.closest('.option')?.classList.remove('selected');
         });
       }
       if (inp.checked) inp.closest('.option').classList.add('selected');
       else inp.closest('.option').classList.remove('selected');
+      clearError(inp);
     });
+  });
+
+  // Clear error on textarea input
+  document.querySelectorAll('textarea').forEach(ta => {
+    ta.addEventListener('input', () => clearError(ta));
   });
 }
 
