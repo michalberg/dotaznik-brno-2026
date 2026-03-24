@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dotazník: Jaké Brno chcete?</title>
-  <meta name="description" content="Bydlení? Doprava? Zeleň? Řekněte nám, co je pro vás důležité!">
-  <meta property="og:title" content="Dotazník: Jaké Brno chcete?">
-  <meta property="og:description" content="Bydlení? Doprava? Zeleň? Řekněte nám, co je pro vás důležité!">
+  <title>Brno vašima očima — dotazník</title>
+  <meta name="description" content="Jak se vám žije v Brně? Podělte se o své pocity v anonymním dotazníku. Pomůže nám lépe pochopit, co pro vás dělá Brno Brnem.">
+  <meta property="og:title" content="Brno vašima očima — dotazník">
+  <meta property="og:description" content="Jak se vám žije v Brně? Podělte se o své pocity v anonymním dotazníku. Pomůže nám lépe pochopit, co pro vás dělá Brno Brnem.">
   <meta property="og:image" content="https://jakebrno.cz/og_image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:url" content="https://jakebrno.cz">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Dotazník: Jaké Brno chcete?">
-  <meta name="twitter:description" content="Bydlení? Doprava? Zeleň? Řekněte nám, co je pro vás důležité!">
+  <meta name="twitter:title" content="Brno vašima očima — dotazník">
+  <meta name="twitter:description" content="Jak se vám žije v Brně? Podělte se o své pocity v anonymním dotazníku. Pomůže nám lépe pochopit, co pro vás dělá Brno Brnem.">
   <meta name="twitter:image" content="https://jakebrno.cz/og_image.png">
   <style>
     :root {
@@ -1299,13 +1299,7 @@
 <!-- ══════════════════════════════════════════════════════════
      NAVIGATION BAR
 ══════════════════════════════════════════════════════════ -->
-<div id="tooltip-panel" class="tooltip-panel hidden" role="tooltip">
-  <div class="tooltip-header">
-    <span>Proč tato otázka?</span>
-    <button class="tooltip-close" onclick="hideTooltip()" aria-label="Zavřít">×</button>
-  </div>
-  <div id="tooltip-text"></div>
-</div>
+
 
 <div class="nav">
   <div class="error-msg hidden" id="errorMsg"></div>
@@ -1774,215 +1768,25 @@ on('input[name="i1"]', 'change', () => {
 // ─── Question metadata: reasoning + required flag ─────────────────
 // Key = prefix that uniquely identifies the question-text
 const QUESTION_META = {
-  'A1.': {
-    required: false,
-    reasoning: 'Otevírá dotazník pocitovou otázkou — každý má na Brno názor. Zachycuje emocionální rámec, skrz který respondenti město vnímají. Kombinace s A2 odhalí „perception gap" mezi tím, jak město vidí dnes a jak by chtěli, aby vypadalo. Nejčastější pojmy jsou přímý materiál pro komunikační kampaň.'
-  },
-  'A2.': {
-    required: false,
-    reasoning: 'Doplňuje A1. Klíčová je křížová analýza: lidé, kteří dnes označí „přeplněné a drahé" a zároveň chtějí „dostupné pro všechny", jsou přirozený segment pro sdělení o bydlení. Pojmy z A2 jsou použitelné jako claim nebo vizuální motiv kampaně.'
-  },
-  'A3.': {
-    required: false,
-    reasoning: 'Pozitivní otázka záměrně na prvním místě — respondent začíná v konstruktivním módu. Pomáhá identifikovat, co lidé cení a nechtějí ztratit.'
-  },
-  'A4.': {
-    required: true,
-    reasoning: 'Povinná otázka po pozitivní. Odpovědi kódujeme do tematických kategorií a porovnáme se strukturovanými otázkami — pokud se opakuje téma, které se neobjeví jinde, je to signál pro program i komunikaci.'
-  },
-  'B1.': {
-    required: false,
-    reasoning: 'Sémantický diferenciál nahrazuje původní nevyvážený set výroků. Neutrální výchozí bod, zachycuje hodnocení na více dimenzích zvlášť, data jsou srovnatelná a statisticky zpracovatelná. Kombinace škál odhalí, kde je vedení vnímáno jinak — např. kompetentní, ale uzavřené.'
-  },
-  'B2.': {
-    required: false,
-    reasoning: 'Explicitně kritická otázka — ale přiznaně. Kombinace s B1 umožní porovnat, zda otevřená kritika odpovídá hodnocení na škálách.'
-  },
-  'B3.': {
-    required: false,
-    reasoning: 'Přímo formuje, jak Zelení prezentují sebe a své kandidáty. Pokud lidé říkají „odvaha a přímočarost", je to jiný positioning než „odbornost". Pomůže kalibrovat tón kampaně, výběr mluvčích i způsob, jak kandidáti mluví o sobě.'
-  },
-  'C1.': {
-    required: false,
-    reasoning: 'Výběr top 3 místo seřazování — kognitivně méně náročné. Kombinace s B1 odhalí, zda lidé kritizující vedení za velké projekty sami velké projekty podporují. Pokud bydlení a MHD dominují nad stadiony a lanovkou, je to argument pro kampaň „my víme, co je skutečná priorita".'
-  },
-  'C2.': {
-    required: false,
-    reasoning: 'Konstruktivnější formulace než „co prokaučovalo" — orientuje respondenta na budoucnost, ne na přiřazování viny. Pro opoziční narativ cenné: pokud se opakují konkrétní příklady, lze je použít jako „co bychom udělali jinak".'
-  },
-  'E1.': {
-    required: true,
-    reasoning: 'Multi-select zachytí kombinátory (kolo + MHD je v Brně běžné) a umožní větvení pro každý mód. Data ukáží skutečný mobilní profil respondenta.'
-  },
-  'E2.': {
-    required: false,
-    reasoning: 'Klíčová otázka pro dopravní program. Říká, co řidičům chybí, než jsou ochotni omezit auto. Výsledky jsou přímý vstup do volebního programu i komunikace.'
-  },
-  'E3a.': {
-    required: true,
-    reasoning: 'Zobrazuje se všem, protože pěšky chodí každý alespoň někdy. Konkrétní místa jsou přímý vstup pro program. Kombinace s N5 (městská část) odhalí geografické hot spoty.'
-  },
-  'E4a.': {
-    required: true,
-    reasoning: 'Cílená otázka na segment, který je přirozenou základnou Zelených. Konkrétní místa umožní přímou vazbu na program.'
-  },
-  'E6.': {
-    required: false,
-    reasoning: 'Rezidentní zóny jsou v Brně politicky citlivé téma. Data ukáží míru podpory i charakter odporu — zda jde o principiální odmítnutí nebo o obavu z konkrétních dopadů. Kombinace s E7 dá koherentní obraz postoje k využití veřejného prostoru.'
-  },
-  'E7a.': {
-    required: false,
-    reasoning: 'Testuje podporu pro konkrétní politiku, která je pro Zelené přirozená, ale politicky citlivá. Formulace záměrně neutrální — „mění se na veřejný prostor", ne „odstraní se parkoviště". Středová odpověď zachytí respondenty, které lze přesvědčit konkrétními příklady. E7b zachycuje otevřenou argumentaci respondentů.'
-  },
-  'E8.': {
-    required: false,
-    reasoning: 'Zelení zastávají kritický postoj k přesunu nádraží — tato otázka neslouží k zjišťování vlastního postoje strany, ale ke změření toho, jak je téma stále živé ve veřejnosti. Segment „pro přesun, ale nespokojený s procesem" může rezonovat s argumenty o transparentnosti. Data pomohou rozhodnout, zda a jak nádraží v kampani komunikovat.'
-  },
-  'F1a.': {
-    required: true,
-    reasoning: 'F1a měří celkovou závažnost bez osobního kontextu. Kombinace s F1b odliší různé typy angažovanosti a umožní přesnější segmentaci.'
-  },
-  'F1b.': {
-    required: false,
-    reasoning: 'F1b měří osobní relevanci. Kombinace s F1a odhalí, jak osobní zkušenost ovlivňuje vnímání závažnosti problému.'
-  },
-  'F3.': {
-    required: false,
-    reasoning: 'Každá odpověď je konkrétní politické opatření — výsledky přímo formují program.'
-  },
-  'G1a.': {
-    required: false,
-    reasoning: 'Diagnostická otázka specifická pro předškolní věk. Kombinace s N5 ukáže geografické rozdíly v dostupnosti míst ve školkách.'
-  },
-  'G1b.': {
-    required: false,
-    reasoning: 'Základní školy jsou jiné téma než školky. Separace G1a a G1b umožní přesnější analýzu a cílenější programová opatření.'
-  },
-  'G2.': {
-    required: false,
-    reasoning: 'Odhalí, co rodiče vedle školek a škol řeší. Kombinace s E3 může ukázat, že bezpečné cesty do školy jsou skrytá priorita.'
-  },
-  'G3.': {
-    required: false,
-    reasoning: 'Zachytí jak potřebu, tak preferovanou formu podpory v jednom kroku. Odliší lidi, kteří chtějí peníze (příspěvek), od těch, kteří chtějí infrastrukturu — jsou to různá politická řešení s různými náklady.'
-  },
-  'H1a.': {
-    required: false,
-    reasoning: 'Kombinace s H2 ukáže, zda nespokojení chtějí velká zařízení — nebo spíše lokální sportoviště a parky. Konkrétní odpovědi v H1b jsou přímý argument do debaty o prioritách investic.'
-  },
-  'H2.': {
-    required: false,
-    reasoning: 'Přímé měření podpory pro kontroverzní investici. Pokud dominuje „spíše pro, ale až potom…", Zelení mohou komunikovat jako „nejsme proti stadionům, ale trváme na správném pořadí priorit".'
-  },
-  'I1.': {
-    required: false,
-    reasoning: 'Subjektivní pocit bezpečí je důležitý politický indikátor. Kombinace s I2 a N5 (městská část) ukáže, zda jde o celoměstský nebo lokální problém — a co lidé skutečně za nebezpečí považují.'
-  },
-  'J1.': {
-    required: false,
-    reasoning: 'Subjektivní vnímání ekonomické situace predikuje, jaká témata respondenta zajímají a jak silně. Kombinace s F1 odhalí propojení ekonomické tísně s bytovým problémem. Pomáhá kalibrovat tón kampaně — „příležitosti" nebo „jistoty".'
-  },
-  'K1.': {
-    required: false,
-    reasoning: 'Zachytí hodnotový rámec a obavy respondentů. Kombinace s N6 ukáže, co motivuje různé segmenty — zda jsou voliči Zelených primárně motivováni klimatem, demokracií nebo ekonomickými obavami. Položka „migrace" je záměrně neutrální — nechává respondenta, aby si sám definoval, jak téma vnímá.'
-  },
-  'K2.': {
-    required: false,
-    reasoning: 'Identifikuje segment volící komunálně podle celostátního klíče. Pomůže kalibrovat, jak moc propojovat brněnskou kampaň se stranickým storytellingem. Kandidát na vyřazení: méně důležité než K1.'
-  },
-  'L1.': {
-    required: false,
-    reasoning: 'Aspirační rámec — co lidi motivuje, ne co jim vadí. Krátké spontánní odpovědi jsou přímý zdroj sloganů a vizí pro kampaň.'
-  },
-  'L2.': {
-    required: false,
-    reasoning: 'Zachytí nejhlubší obavy a červené linie. Pokud se opakují konkrétní projekty nebo jevy, je to signál témat použitelných jako negativní motivace k volbě. Kandidát na vyřazení: překrývá se tematicky s C3.'
-  },
-  'L3.': {
-    required: false,
-    reasoning: 'Záchytná otázka — prostor pro témata, která dotazník nepokryl nebo která respondenta zaujala natolik, že je chce sdělit nad rámec strukturovaných odpovědí.'
-  },
+  'A4.':  { required: true },
+  'E1.':  { required: true },
+  'E3a.': { required: true },
+  'E4a.': { required: true },
+  'F1a.': { required: true },
 };
 
-// ─── Tooltip logic ────────────────────────────────────────────────
-let activeInfoBtn = null;
-
-function showTooltip(text, btn) {
-  if (activeInfoBtn && activeInfoBtn !== btn) {
-    activeInfoBtn.classList.remove('active');
-  }
-  const panel = document.getElementById('tooltip-panel');
-  const textEl = document.getElementById('tooltip-text');
-
-  if (activeInfoBtn === btn && !panel.classList.contains('hidden')) {
-    hideTooltip();
-    return;
-  }
-
-  textEl.textContent = text;
-  panel.classList.remove('hidden');
-  activeInfoBtn = btn;
-  btn.classList.add('active');
-
-  // Position near button
-  const rect = btn.getBoundingClientRect();
-  const pw = panel.offsetWidth || 300;
-  const ph = panel.offsetHeight || 120;
-  const margin = 8;
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-
-  let top = rect.bottom + margin;
-  if (top + ph > vh - 60) top = rect.top - ph - margin;
-  if (top < margin) top = margin;
-
-  let left = rect.left - pw / 2 + rect.width / 2;
-  left = Math.max(margin, Math.min(left, vw - pw - margin));
-
-  panel.style.top  = top  + 'px';
-  panel.style.left = left + 'px';
-}
-
-function hideTooltip() {
-  document.getElementById('tooltip-panel').classList.add('hidden');
-  if (activeInfoBtn) { activeInfoBtn.classList.remove('active'); activeInfoBtn = null; }
-}
-
-// Close on outside click
-document.addEventListener('click', e => {
-  if (!e.target.closest('.info-btn') && !e.target.closest('#tooltip-panel')) {
-    hideTooltip();
-  }
-});
-
-// ─── Inject info buttons + required marks ─────────────────────────
+// ─── Inject required marks ────────────────────────────────────────
 function setupQuestionAnnotations() {
   document.querySelectorAll('.question-text').forEach(el => {
     const text = el.textContent.trim();
     for (const [prefix, meta] of Object.entries(QUESTION_META)) {
       if (!text.startsWith(prefix)) continue;
-
-      // Required asterisk
       if (meta.required) {
         const star = document.createElement('span');
         star.className = 'required-mark';
         star.textContent = '*';
         star.title = 'Povinná otázka';
         el.appendChild(star);
-      }
-
-      // Info button
-      if (meta.reasoning) {
-        const btn = document.createElement('button');
-        btn.className = 'info-btn';
-        btn.type = 'button';
-        btn.setAttribute('aria-label', 'Proč tato otázka?');
-        btn.textContent = 'i';
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          showTooltip(meta.reasoning, btn);
-        });
-        el.appendChild(btn);
       }
       break;
     }
