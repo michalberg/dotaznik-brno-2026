@@ -1,0 +1,7 @@
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+.env
+.env.*
+.DS_Store
