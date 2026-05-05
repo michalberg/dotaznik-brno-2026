@@ -490,13 +490,39 @@
       color: var(--text-secondary);
       border: 1.5px solid var(--border);
     }
-    .btn-back:hover { background: var(--bg); }
     .btn-back:disabled { opacity: 0.3; cursor: not-allowed; }
     .btn-next {
       background: var(--primary);
       color: #fff;
     }
-    .btn-next:hover { background: var(--primary-light); }
+    /* :hover stavy jen na zařízeních s ukazatelem (myš, trackpad) — iOS Safari
+       jinak na první tap zafixuje hover stav a vyžaduje druhý tap pro click. */
+    @media (hover: hover) {
+      .btn-back:hover { background: var(--bg); }
+      .btn-next:hover { background: var(--primary-light); }
+    }
+
+    /* ── SCROLL HINT (nad navbar když je pod stránkou ještě obsah) ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: rgba(34, 34, 34, 0.85);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .nav.show-hint .scroll-hint {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
 
     /* ── INTRO ── */
     .intro-card {
@@ -1347,6 +1373,7 @@
 
 
 <div class="nav">
+  <div class="scroll-hint" aria-hidden="true">↓ Posuňte se dolů pro další otázky</div>
   <div class="error-msg hidden" id="errorMsg"></div>
   <div class="nav-inner">
     <button class="btn btn-back" id="btnBack" onclick="goBack()" disabled>← Zpět</button>
@@ -1495,10 +1522,6 @@ function validatePage() {
 }
 
 // ─── Navigation ───────────────────────────────────────────────────
-function isPageScrolledToBottom() {
-  return window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
-}
-
 function goNext() {
   if (PAGES[currentIdx] === 'page-intro') {
     currentIdx++;
@@ -1506,16 +1529,6 @@ function goNext() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
-
-  // Pokud uživatel ještě nedoscrolloval na konec stránky, místo přechodu
-  // ho nejdřív k tlačítku scrollni — aby si neuvědoměle nepřeskočil otázky,
-  // které ještě neviděl. Až podruhé klikne (nebo doscrolluje sám),
-  // skutečně přejde na další stranu.
-  if (!isPageScrolledToBottom()) {
-    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
-    return;
-  }
-
   if (!validatePage()) return;
   saveProgress('partial');
   if (currentIdx < PAGES.length - 1) {
@@ -1566,6 +1579,40 @@ function updateNavVisibility() {
   } else {
     nav.classList.add('nav-visible');
   }
+  updateScrollHint();
+}
+
+let _scrollHintRaf = null;
+function updateScrollHint() {
+  if (_scrollHintRaf) return;
+  _scrollHintRaf = requestAnimationFrame(() => {
+    _scrollHintRaf = null;
+    const nav = document.querySelector('.nav');
+    const id = PAGES[currentIdx];
+    if (!nav) return;
+
+    if (id === 'page-intro' || id === 'page-end') {
+      nav.classList.remove('show-hint');
+      return;
+    }
+
+    // Použij visualViewport pokud je k dispozici (iOS s otevřenou klávesnicí
+    // mění visualViewport.height, ale window.innerHeight ne).
+    const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrolledTo = window.scrollY + vh;
+    const remaining = scrollHeight - scrolledTo;
+
+    // 80px tolerance — když do dna zbývá víc, pod stránkou je ještě obsah.
+    nav.classList.toggle('show-hint', remaining > 80);
+  });
+}
+
+window.addEventListener('scroll', updateScrollHint, { passive: true });
+window.addEventListener('resize', updateScrollHint);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', updateScrollHint);
+  window.visualViewport.addEventListener('scroll', updateScrollHint);
 }
 
 function updateProgress() {
