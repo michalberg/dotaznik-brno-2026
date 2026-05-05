@@ -502,27 +502,30 @@
       .btn-next:hover { background: var(--primary-light); }
     }
 
-    /* ── SCROLL HINT (nad navbar když je pod stránkou ještě obsah) ── */
+    /* ── SCROLL HINT (samostatný overlay, nezávislý na navbaru) ── */
     .scroll-hint {
-      position: absolute;
-      bottom: calc(100% + 8px);
+      position: fixed;
+      bottom: max(24px, calc(env(safe-area-inset-bottom) + 18px));
       left: 50%;
-      transform: translateX(-50%) translateY(6px);
-      background: rgba(34, 34, 34, 0.85);
+      transform: translateX(-50%) translateY(10px);
+      background: rgba(34, 34, 34, 0.88);
       color: #fff;
-      padding: 6px 14px;
+      padding: 8px 16px;
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 500;
       white-space: nowrap;
       pointer-events: none;
       opacity: 0;
+      z-index: 99;
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
-    .nav.show-hint .scroll-hint {
+    .scroll-hint.visible {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    .bottom-sentinel { display: block; height: 1px; }
 
     /* ── INTRO ── */
     .intro-card {
@@ -1365,15 +1368,16 @@
   </div>
 </div>
 
+<div class="bottom-sentinel" id="bottomSentinel" aria-hidden="true"></div>
+
 </div><!-- /main -->
+
+<div class="scroll-hint" id="scrollHint" aria-hidden="true">↓ Posuňte dolů pro další otázky</div>
 
 <!-- ══════════════════════════════════════════════════════════
      NAVIGATION BAR
 ══════════════════════════════════════════════════════════ -->
-
-
 <div class="nav">
-  <div class="scroll-hint" aria-hidden="true">↓ Posuňte se dolů pro další otázky</div>
   <div class="error-msg hidden" id="errorMsg"></div>
   <div class="nav-inner">
     <button class="btn btn-back" id="btnBack" onclick="goBack()" disabled>← Zpět</button>
@@ -1567,52 +1571,57 @@ function showPage() {
   updateNavVisibility();
 }
 
-function updateNavVisibility() {
-  const nav = document.querySelector('.nav');
-  const id = PAGES[currentIdx];
+// Stav „uživatel je u konce stránky" — udržuje IntersectionObserver
+// sledující sentinel na konci main. Spolehlivější než počítat ze scrollY,
+// zvlášť na mobilu s URL barem a virtuální klávesnicí.
+let _atBottom = false;
 
-  // Lišta s tlačítky se neukazuje na úvodní stránce (vstup je přes btn-start),
-  // všude jinde je vždy viditelná — dřívější scroll-reveal logika působila
-  // na mobilu problémy s dvojitým kliknutím a zoomem klávesnice.
+function updateNavAndHint() {
+  const nav  = document.querySelector('.nav');
+  const hint = document.getElementById('scrollHint');
+  const id   = PAGES[currentIdx];
+
   if (id === 'page-intro') {
     nav.classList.remove('nav-visible');
-  } else {
-    nav.classList.add('nav-visible');
+    hint.classList.remove('visible');
+    return;
   }
-  updateScrollHint();
+  if (id === 'page-end') {
+    nav.classList.add('nav-visible');
+    hint.classList.remove('visible');
+    return;
+  }
+
+  // Content stránky: nav viditelný teprve po doscrollování dolů.
+  nav.classList.toggle('nav-visible', _atBottom);
+  hint.classList.toggle('visible', !_atBottom);
 }
 
-let _scrollHintRaf = null;
-function updateScrollHint() {
-  if (_scrollHintRaf) return;
-  _scrollHintRaf = requestAnimationFrame(() => {
-    _scrollHintRaf = null;
-    const nav = document.querySelector('.nav');
-    const id = PAGES[currentIdx];
-    if (!nav) return;
+function updateNavVisibility() {
+  // Volání po showPage — nový obsah, observer si dosadí _atBottom při
+  // dalším intersectu. Pro jistotu předpokládáme „nahoře" hned po přechodu.
+  _atBottom = false;
+  updateNavAndHint();
+}
 
-    if (id === 'page-intro' || id === 'page-end') {
-      nav.classList.remove('show-hint');
-      return;
-    }
-
-    // Použij visualViewport pokud je k dispozici (iOS s otevřenou klávesnicí
-    // mění visualViewport.height, ale window.innerHeight ne).
-    const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
-    const scrollHeight = document.documentElement.scrollHeight;
-    const scrolledTo = window.scrollY + vh;
-    const remaining = scrollHeight - scrolledTo;
-
-    // 80px tolerance — když do dna zbývá víc, pod stránkou je ještě obsah.
-    nav.classList.toggle('show-hint', remaining > 80);
+function setupBottomObserver() {
+  const sentinel = document.getElementById('bottomSentinel');
+  if (!sentinel || !('IntersectionObserver' in window)) {
+    // Fallback: bez observeru navbar prostě zobrazíme natrvalo (lepší než nic).
+    _atBottom = true;
+    updateNavAndHint();
+    return;
+  }
+  const obs = new IntersectionObserver((entries) => {
+    _atBottom = entries[0].isIntersecting;
+    updateNavAndHint();
+  }, {
+    // Pozitivní bottom rootMargin trigger fires kousek před koncem —
+    // jakmile se k tlačítku „blíží", už je vidět.
+    rootMargin: '0px 0px 60px 0px',
+    threshold: 0,
   });
-}
-
-window.addEventListener('scroll', updateScrollHint, { passive: true });
-window.addEventListener('resize', updateScrollHint);
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', updateScrollHint);
-  window.visualViewport.addEventListener('scroll', updateScrollHint);
+  obs.observe(sentinel);
 }
 
 function updateProgress() {
@@ -2064,6 +2073,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupMaxSelect();
   setupQuestionAnnotations();
   setupConsentToggle();
+  setupBottomObserver();
 
   // Odebrat čísla otázek (např. "A1. ", "E3a. ") z textu pro uživatele
   document.querySelectorAll('.question-text, .followup-label').forEach(el => {
