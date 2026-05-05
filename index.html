@@ -1495,6 +1495,10 @@ function validatePage() {
 }
 
 // ─── Navigation ───────────────────────────────────────────────────
+function isPageScrolledToBottom() {
+  return window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
+}
+
 function goNext() {
   if (PAGES[currentIdx] === 'page-intro') {
     currentIdx++;
@@ -1502,6 +1506,16 @@ function goNext() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
+
+  // Pokud uživatel ještě nedoscrolloval na konec stránky, místo přechodu
+  // ho nejdřív k tlačítku scrollni — aby si neuvědoměle nepřeskočil otázky,
+  // které ještě neviděl. Až podruhé klikne (nebo doscrolluje sám),
+  // skutečně přejde na další stranu.
+  if (!isPageScrolledToBottom()) {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+    return;
+  }
+
   if (!validatePage()) return;
   saveProgress('partial');
   if (currentIdx < PAGES.length - 1) {
