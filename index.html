@@ -690,6 +690,15 @@
       .question { padding: 16px; }
       .intro-card { padding: 28px 18px 22px; }
       .intro-card h1 { font-size: 22px; }
+
+      /* iOS Safari auto-zoomuje na inputy s font-size < 16px a už zpět nezooomuje.
+         16px na mobilu = bez zoomu, layout zůstává čitelný. */
+      .other-input,
+      .inline-followup textarea,
+      .question textarea,
+      .question select,
+      .email-input,
+      .signup-card .email-input { font-size: 16px; }
     }
   </style>
 </head>
@@ -1531,47 +1540,18 @@ function showPage() {
   updateNavVisibility();
 }
 
-let _navScrollHandler = null;
-
 function updateNavVisibility() {
   const nav = document.querySelector('.nav');
   const id = PAGES[currentIdx];
 
-  if (_navScrollHandler) {
-    window.removeEventListener('scroll', _navScrollHandler);
-    _navScrollHandler = null;
-  }
-
-  // Na úvodní stránce lištu skryjeme — vstup je jen přes btn-start
+  // Lišta s tlačítky se neukazuje na úvodní stránce (vstup je přes btn-start),
+  // všude jinde je vždy viditelná — dřívější scroll-reveal logika působila
+  // na mobilu problémy s dvojitým kliknutím a zoomem klávesnice.
   if (id === 'page-intro') {
     nav.classList.remove('nav-visible');
-    return;
-  }
-  // Na závěrečné stránce lištu zobrazíme
-  if (id === 'page-end') {
+  } else {
     nav.classList.add('nav-visible');
-    return;
   }
-
-  nav.classList.remove('nav-visible');
-
-  function isScrolledToBottom() {
-    return window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
-  }
-
-  function showIfAtBottom() {
-    if (isScrolledToBottom()) {
-      nav.classList.add('nav-visible');
-      window.removeEventListener('scroll', _navScrollHandler);
-      _navScrollHandler = null;
-    }
-  }
-
-  _navScrollHandler = showIfAtBottom;
-  window.addEventListener('scroll', _navScrollHandler);
-
-  // Zkontrolujeme až po smooth scrollu (cca 400 ms) — pro krátké stránky co se vejdou do viewportu
-  setTimeout(showIfAtBottom, 450);
 }
 
 function updateProgress() {
