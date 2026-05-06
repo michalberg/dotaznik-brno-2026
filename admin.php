@@ -296,7 +296,7 @@ $sourceTables = null; $sourcesTotal = 0;
 if ($view === 'sources') {
     $rowsAll = $db->query("SELECT status, email, data FROM responses")->fetchAll(PDO::FETCH_ASSOC);
     $sourcesTotal = count($rowsAll);
-    $dims = ['utm_source' => [], 'utm_medium' => [], 'utm_campaign' => []];
+    $dims = ['utm_source' => [], 'utm_medium' => [], 'utm_campaign' => [], 'utm_content' => []];
     foreach ($rowsAll as $r) {
         $d = json_decode($r['data'], true) ?: [];
         $hasEmail = !empty($r['email']) && trim((string)$r['email']) !== '';
@@ -590,7 +590,7 @@ function urlWith($overrides = []) {
 <?php elseif ($view === 'sources'): ?>
 
   <?php
-    $dimLabels = ['utm_source'=>'Zdroj (utm_source)', 'utm_medium'=>'Médium (utm_medium)', 'utm_campaign'=>'Kampaň (utm_campaign)'];
+    $dimLabels = ['utm_source'=>'Zdroj (utm_source)', 'utm_medium'=>'Médium (utm_medium)', 'utm_campaign'=>'Kampaň (utm_campaign)', 'utm_content'=>'Obsah (utm_content)'];
     foreach ($sourceTables as $dim => $bucket):
       $maxTotal = $bucket ? max(array_column($bucket, 'total')) : 0;
   ?>
