@@ -1766,10 +1766,12 @@ function doSubmit() {
 
   saveProgress('complete');
 
-  const _surveyUrl  = location.origin + location.pathname;
-  const _shareMsg   = 'Zelení Brno zjišťují, jaké Brno chcete. Vyplňte dotazník: ' + _surveyUrl;
-  const _fbUrl      = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(_surveyUrl);
-  const _msgUrl     = 'fb-messenger://share?link=' + encodeURIComponent(_surveyUrl);
+  const _surveyBase = location.origin + location.pathname;
+  const _utm = (src) => _surveyBase + '?utm_source=' + src + '&utm_medium=share&utm_campaign=dotaznik2026';
+  const _surveyUrl  = _utm('copy'); // odkaz pro „Zkopírovat" + WhatsApp text
+  const _shareMsg   = 'Zelení Brno zjišťují, jaké Brno chcete. Vyplňte dotazník: ' + _utm('whatsapp');
+  const _fbUrl      = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(_utm('facebook'));
+  const _msgUrl     = 'fb-messenger://share?link=' + encodeURIComponent(_utm('messenger'));
   const _waUrl      = 'https://wa.me/?text=' + encodeURIComponent(_shareMsg);
   const _fbZeleni   = 'https://www.facebook.com/zelenebrno';
   const _igZeleni   = 'https://www.instagram.com/zelenebrno/';
