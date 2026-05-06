@@ -193,7 +193,8 @@ if (!in_array($view, ['list','byq'], true)) $view = 'list';
 $stats = $db->query("
     SELECT COUNT(*) total,
            SUM(status='complete') complete,
-           SUM(status='partial')  partial
+           SUM(status='partial')  partial,
+           SUM(email IS NOT NULL AND TRIM(email) != '') with_email
     FROM responses
 ")->fetch(PDO::FETCH_ASSOC);
 
@@ -430,6 +431,7 @@ function urlWith($overrides = []) {
     <div class="stat"><div class="stat-num"><?= $stats['total'] ?></div><div class="stat-label">celkem odpovědí</div></div>
     <div class="stat"><div class="stat-num"><?= $stats['complete'] ?></div><div class="stat-label">kompletních</div></div>
     <div class="stat"><div class="stat-num"><?= $stats['partial'] ?></div><div class="stat-label">rozpracovaných</div></div>
+    <div class="stat"><div class="stat-num"><?= $stats['with_email'] ?></div><div class="stat-label">s e-mailem</div></div>
   </div>
 
 <?php if ($view === 'list'): ?>
