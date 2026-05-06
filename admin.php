@@ -187,7 +187,7 @@ $status = $_GET['status'] ?? 'all';
 if (!in_array($status, ['all','complete','partial'], true)) $status = 'all';
 $qstr   = trim((string)($_GET['q'] ?? ''));
 $view   = $_GET['view'] ?? 'list';
-if (!in_array($view, ['list','byq'], true)) $view = 'list';
+if (!in_array($view, ['list','byq','sources'], true)) $view = 'list';
 
 // ── Statistiky ────────────────────────────────────────────────────
 $stats = $db->query("
@@ -289,6 +289,32 @@ if ($view === 'byq' && $qid && isset($QUESTIONS[$qid]) && empty($QUESTIONS[$qid]
     }
     arsort($counts);
     $byqSummary = $counts;
+}
+
+// ── Statistika sources (view=sources) ─────────────────────────────
+$sourceTables = null; $sourcesTotal = 0;
+if ($view === 'sources') {
+    $rowsAll = $db->query("SELECT status, email, data FROM responses")->fetchAll(PDO::FETCH_ASSOC);
+    $sourcesTotal = count($rowsAll);
+    $dims = ['utm_source' => [], 'utm_medium' => [], 'utm_campaign' => []];
+    foreach ($rowsAll as $r) {
+        $d = json_decode($r['data'], true) ?: [];
+        $hasEmail = !empty($r['email']) && trim((string)$r['email']) !== '';
+        foreach ($dims as $k => &$bucket) {
+            $v = isset($d[$k]) && trim((string)$d[$k]) !== '' ? trim((string)$d[$k]) : '(přímo / neznámý)';
+            if (!isset($bucket[$v])) $bucket[$v] = ['total'=>0, 'complete'=>0, 'partial'=>0, 'email'=>0];
+            $bucket[$v]['total']++;
+            if ($r['status'] === 'complete') $bucket[$v]['complete']++;
+            else $bucket[$v]['partial']++;
+            if ($hasEmail) $bucket[$v]['email']++;
+        }
+        unset($bucket);
+    }
+    foreach ($dims as $k => &$bucket) {
+        uasort($bucket, fn($a, $b) => $b['total'] <=> $a['total']);
+    }
+    unset($bucket);
+    $sourceTables = $dims;
 }
 
 // ── Helper: URL s filtry ──────────────────────────────────────────
@@ -421,6 +447,7 @@ function urlWith($overrides = []) {
   <div class="tabs">
     <a href="<?= htmlspecialchars(urlWith(['view'=>null, 'qid'=>null, 'id'=>null])) ?>" class="<?= $view==='list'?'active':'' ?>">Respondenti</a>
     <a href="<?= htmlspecialchars(urlWith(['view'=>'byq', 'p'=>null, 'id'=>null])) ?>" class="<?= $view==='byq'?'active':'' ?>">Po otázkách</a>
+    <a href="<?= htmlspecialchars(urlWith(['view'=>'sources', 'p'=>null, 'id'=>null, 'qid'=>null, 'q'=>null, 'status'=>null])) ?>" class="<?= $view==='sources'?'active':'' ?>">Sources</a>
   </div>
   <div class="right"><a href="?logout=1">Odhlásit se</a></div>
 </div>
@@ -495,7 +522,7 @@ function urlWith($overrides = []) {
   </div>
   <?php endif; ?>
 
-<?php else: /* view=byq */ ?>
+<?php elseif ($view === 'byq'): ?>
 
   <div style="display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start">
     <div class="qlist">
@@ -559,6 +586,49 @@ function urlWith($overrides = []) {
       <?php endif; ?>
     </div>
   </div>
+
+<?php elseif ($view === 'sources'): ?>
+
+  <?php
+    $dimLabels = ['utm_source'=>'Zdroj (utm_source)', 'utm_medium'=>'Médium (utm_medium)', 'utm_campaign'=>'Kampaň (utm_campaign)'];
+    foreach ($sourceTables as $dim => $bucket):
+      $maxTotal = $bucket ? max(array_column($bucket, 'total')) : 0;
+  ?>
+    <h2 style="font-size:16px;margin:18px 0 10px;color:#444"><?= htmlspecialchars($dimLabels[$dim]) ?></h2>
+    <table>
+      <thead>
+        <tr>
+          <th><?= htmlspecialchars($dim) ?></th>
+          <th style="text-align:right">odpovědí</th>
+          <th style="width:30%">podíl</th>
+          <th style="text-align:right">kompletních</th>
+          <th style="text-align:right">rozpracovaných</th>
+          <th style="text-align:right">s e-mailem</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($bucket as $val => $c):
+          $pct = $sourcesTotal > 0 ? round(100 * $c['total'] / $sourcesTotal, 1) : 0;
+          $bar = $maxTotal > 0 ? round(100 * $c['total'] / $maxTotal) : 0;
+        ?>
+          <tr>
+            <td><?= htmlspecialchars($val) ?></td>
+            <td style="text-align:right;font-variant-numeric:tabular-nums"><?= $c['total'] ?></td>
+            <td>
+              <div class="sum-bar" style="margin:0"><div class="sum-fill" style="width:<?= $bar ?>%"></div></div>
+              <span style="font-size:12px;color:#888"><?= $pct ?> %</span>
+            </td>
+            <td style="text-align:right;font-variant-numeric:tabular-nums;color:#155724"><?= $c['complete'] ?></td>
+            <td style="text-align:right;font-variant-numeric:tabular-nums;color:#856404"><?= $c['partial'] ?></td>
+            <td style="text-align:right;font-variant-numeric:tabular-nums"><?= $c['email'] ?></td>
+          </tr>
+        <?php endforeach; ?>
+        <?php if (empty($bucket)): ?>
+          <tr><td colspan="6" style="text-align:center;color:#999;padding:20px">Žádná data.</td></tr>
+        <?php endif; ?>
+      </tbody>
+    </table>
+  <?php endforeach; ?>
 
 <?php endif; ?>
 
