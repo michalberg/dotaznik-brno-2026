@@ -272,6 +272,24 @@ if ($view === 'byq') {
     }
 }
 
+// ── Souhrn voleb pro view=byq (jen pro výběrové otázky) ──────────
+// Volný text poznáme dle 'long' v $QUESTIONS — ten souhrn nedělá smysl.
+$byqSummary = null; $byqIsMulti = false;
+if ($view === 'byq' && $qid && isset($QUESTIONS[$qid]) && empty($QUESTIONS[$qid]['long']) && !empty($byqAnswers)) {
+    $counts = [];
+    foreach ($byqAnswers as $a) {
+        $vals = is_array($a['val']) ? $a['val'] : [$a['val']];
+        if (count($vals) > 1) $byqIsMulti = true;
+        foreach ($vals as $opt) {
+            $opt = trim((string)$opt);
+            if ($opt === '') continue;
+            $counts[$opt] = ($counts[$opt] ?? 0) + 1;
+        }
+    }
+    arsort($counts);
+    $byqSummary = $counts;
+}
+
 // ── Helper: URL s filtry ──────────────────────────────────────────
 function urlWith($overrides = []) {
     $base = ['view'=>$_GET['view'] ?? null, 'status'=>$_GET['status'] ?? null, 'q'=>$_GET['q'] ?? null, 'p'=>$_GET['p'] ?? null, 'qid'=>$_GET['qid'] ?? null, 'id'=>$_GET['id'] ?? null];
@@ -373,6 +391,20 @@ function urlWith($overrides = []) {
   .answers .ans .ameta { font-size: 12px; color: #999; width: 110px; flex-shrink: 0; padding-top: 2px; }
   .answers .ans .ameta a { color: #557A53; text-decoration: none; }
   .answers .ans .aval { font-size: 14.5px; color: #1f1f1f; line-height: 1.55; flex: 1; white-space: pre-wrap; }
+
+  .summary { background: #fafaf6; border: 1px solid #ececec; border-radius: 8px; padding: 14px 16px; margin: 8px 0 18px; }
+  .summary-head { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #557A53; margin-bottom: 10px; }
+  .sum-row { display: grid; grid-template-columns: minmax(140px, 1fr) 2fr 90px; gap: 10px; align-items: center; padding: 4px 0; font-size: 13.5px; }
+  .sum-label { color: #1f1f1f; word-break: break-word; }
+  .sum-bar { height: 10px; background: #e7e7df; border-radius: 999px; overflow: hidden; }
+  .sum-fill { height: 100%; background: #557A53; border-radius: 999px; }
+  .sum-num { text-align: right; color: #333; font-variant-numeric: tabular-nums; }
+  .sum-pct { color: #888; margin-left: 6px; font-size: 12px; }
+  .summary-divider { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #888; margin: 18px 0 6px; padding-top: 10px; border-top: 1px dashed #e0e0d8; }
+  @media (max-width: 640px) {
+    .sum-row { grid-template-columns: 1fr 70px; }
+    .sum-bar { grid-column: 1 / -1; order: 3; }
+  }
 
   @media (max-width: 640px) {
     .answers .ans { flex-direction: column; gap: 4px; }
@@ -484,7 +516,29 @@ function urlWith($overrides = []) {
       <?php if ($qid && isset($QUESTIONS[$qid])): ?>
         <h2><?= htmlspecialchars($QUESTIONS[$qid]['n']) ?></h2>
         <div class="qfull"><?= htmlspecialchars($QUESTIONS[$qid]['text']) ?></div>
-        <div style="font-size:13px;color:#888;margin-bottom:6px"><?= count($byqAnswers) ?> odpovědí</div>
+        <div style="font-size:13px;color:#888;margin-bottom:6px"><?= count($byqAnswers) ?> odpovědí<?= $byqIsMulti ? ' (vícenásobný výběr)' : '' ?></div>
+
+        <?php if ($byqSummary !== null): ?>
+          <?php
+            $respondents = count($byqAnswers);
+            $maxC = max($byqSummary);
+          ?>
+          <div class="summary">
+            <div class="summary-head">Souhrn — seřazeno dle četnosti<?= $byqIsMulti ? ' · % počítáno z respondentů, kteří odpověděli' : '' ?></div>
+            <?php foreach ($byqSummary as $opt => $c):
+              $pct = $respondents > 0 ? round(100 * $c / $respondents) : 0;
+              $barW = $maxC > 0 ? round(100 * $c / $maxC) : 0;
+            ?>
+              <div class="sum-row">
+                <div class="sum-label"><?= htmlspecialchars($opt) ?></div>
+                <div class="sum-bar"><div class="sum-fill" style="width:<?= $barW ?>%"></div></div>
+                <div class="sum-num"><?= $c ?> <span class="sum-pct"><?= $pct ?> %</span></div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+          <div class="summary-divider">Jednotlivé odpovědi</div>
+        <?php endif; ?>
+
         <?php foreach ($byqAnswers as $a): ?>
           <div class="ans">
             <div class="ameta">
