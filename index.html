@@ -1595,9 +1595,17 @@ function updateNavAndHint() {
 }
 
 function updateNavVisibility() {
-  // Volání po showPage — nový obsah, observer si dosadí _atBottom při
-  // dalším intersectu. Pro jistotu předpokládáme „nahoře" hned po přechodu.
-  _atBottom = false;
+  // Po přechodu stránky observer nemusí fírnout (žádný scroll, jen layout).
+  // Krátké stránky (např. Bezpečnost) by jinak nikdy neukázaly navbar —
+  // proveďme tedy ruční kontrolu pozice sentinelu.
+  const sentinel = document.getElementById('bottomSentinel');
+  if (sentinel) {
+    const rect = sentinel.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    _atBottom = rect.top <= vh + 60;
+  } else {
+    _atBottom = false;
+  }
   updateNavAndHint();
 }
 
