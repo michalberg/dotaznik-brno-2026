@@ -1767,7 +1767,7 @@ function doSubmit() {
   saveProgress('complete');
 
   const _surveyBase = location.origin + location.pathname;
-  const _utm = (src) => _surveyBase + '?utm_source=' + src + '&utm_medium=share&utm_campaign=dotaznik2026';
+  const _utm = (src) => _surveyBase + '?utm_source=' + src + '&utm_medium=share&utm_campaign=dotaznik';
   const _surveyUrl  = _utm('copy'); // odkaz pro „Zkopírovat" + WhatsApp text
   const _shareMsg   = 'Zelení Brno zjišťují, jaké Brno chcete. Vyplňte dotazník: ' + _utm('whatsapp');
   const _fbUrl      = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(_utm('facebook'));

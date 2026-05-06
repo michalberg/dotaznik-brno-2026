@@ -309,7 +309,7 @@ Tento dokument zachycuje skutečnou podobu dotazníku, jak je nasazený. Jde o r
 
 E-mailové pole pro zaslání výsledků průzkumu (volitelné, vyžaduje souhlas se zasíláním).
 
-Sdílecí tlačítka (Facebook, Messenger, WhatsApp, Zkopírovat odkaz) — každé s vlastním `utm_source`, společné `utm_medium=share` a `utm_campaign=dotaznik2026`.
+Sdílecí tlačítka (Facebook, Messenger, WhatsApp, Zkopírovat odkaz) — každé s vlastním `utm_source`, společné `utm_medium=share` a `utm_campaign=dotaznik`.
 
 ---
 
