@@ -1,14 +1,39 @@
 <?php
+// ── Bezpečné session cookie ───────────────────────────────────────
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path'     => '/',
+    'httponly' => true,
+    'secure'   => !empty($_SERVER['HTTPS']),
+    'samesite' => 'Lax',
+]);
 session_start();
 
-$PASSWORD = 'natalie';
-$DB_PATH  = __DIR__ . '/../dotaznik.db';
+$SECRET_FILE     = __DIR__ . '/../admin-pwd-hash.php'; // mimo web root, mimo git
+$DB_PATH         = __DIR__ . '/../dotaznik.db';
+$FALLBACK_PASSWORD = 'natalie'; // zpětná kompatibilita, použije se jen pokud chybí $SECRET_FILE
+
+$PASSWORD_HASH = is_file($SECRET_FILE) ? require $SECRET_FILE : null;
 
 // ── Přihlášení ────────────────────────────────────────────────────
 if (isset($_POST['password'])) {
-    if ($_POST['password'] === $PASSWORD) {
+    // jednoduchá brute-force brzda v rámci session
+    $attempts = $_SESSION['login_attempts'] ?? 0;
+    if ($attempts >= 5) {
+        sleep(min(10, $attempts)); // zpoždění roste s počtem pokusů
+    }
+
+    $submitted = (string)$_POST['password'];
+    $ok = is_string($PASSWORD_HASH)
+        ? password_verify($submitted, $PASSWORD_HASH)
+        : hash_equals($FALLBACK_PASSWORD, $submitted);
+
+    if ($ok) {
+        session_regenerate_id(true);
         $_SESSION['admin'] = true;
+        unset($_SESSION['login_attempts']);
     } else {
+        $_SESSION['login_attempts'] = $attempts + 1;
         $loginError = true;
     }
 }

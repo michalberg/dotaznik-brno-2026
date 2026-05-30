@@ -69,4 +69,23 @@ Pak otevřít http://127.0.0.1:8000/. Pro test admin/save je třeba mít zapisov
 - Statický `index.html` + PHP endpointy (`save.php`, `admin.php`, `stats.php`) běží přímo na sdíleném hostingu.
 - Databázový soubor `dotaznik.db` patří **mimo webový kořen** (`../dotaznik.db`) — viz cesty v `save.php` a `admin.php`.
 - `save.php` má CORS hlavičku omezenou na `https://jakebrno.cz`.
-- Admin heslo je nastaveno v `admin.php` (`$PASSWORD`). Při změně hostingu měnit přímo v souboru.
+
+### Admin heslo
+
+Heslo se načítá jako `password_hash()` z konfiguračního souboru **mimo webový kořen** (`../admin-pwd-hash.php`, vedle `dotaznik.db`). Tento soubor není v gitu.
+
+**Nastavení (jednorázově při deploy):**
+
+1. Vygenerovat hash lokálně:
+   ```powershell
+   php -r "echo password_hash('zde-silne-heslo', PASSWORD_DEFAULT), PHP_EOL;"
+   ```
+2. Na hostingu vytvořit `../admin-pwd-hash.php` s obsahem:
+   ```php
+   <?php return '$2y$10$...zde-vlozeny-hash...';
+   ```
+3. Hotovo — `admin.php` ho načte automaticky.
+
+**Zpětná kompatibilita:** pokud konfigurační soubor neexistuje, použije se fallback heslo `natalie` zadrátované v `admin.php`. To je pouze pro vývoj / staré instalace — na produkci vždy nasadit konfigurační soubor, jinak je heslo veřejně známé z repa.
+
+**Pozn. k HTTPS:** session cookie má flag `Secure` jen pokud běží přes HTTPS, takže lokální `php -S` na HTTP funguje bez úprav.
